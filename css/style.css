@@ -5,17 +5,18 @@
 @font-face { font-family: "inter"; src: url("../medias/fonts/inter/Inter.var.woff2") format("woff2"); }
 @font-face { font-family: "inter"; font-style: italic; src: url("../medias/fonts/inter/Inter-italic.var.woff2") format("woff2"); }
 
+/* ==========================
+ Retro gaming
+===========================*/
+
+@font-face { font-family: "retro-gaming"; src: url("../medias/fonts/retro-gaming/Retro\ Gaming.woff2") format("woff2"); }
+
 /* ---------------------------------------------------------------------- */
 
 :root { 
-  font-family: 'inter', sans-serif;
+  font-family: 'retro-gaming', sans-serif;
   font-weight: 400;
-  font-size: 1em;
-}
-@supports (font-variation-settings: normal) {
-  :root { 
-    font-family: 'inter', sans-serif;
-  }
+  font-size: 16px;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -66,6 +67,9 @@
 
 * {
   box-sizing: border-box;
+  font-family: 'retro-gaming', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
 }
 
 html, body {
@@ -324,6 +328,7 @@ main {
     justify-content: center;
     align-items: center;
     padding: var(--cell-size);
+    gap: 16px;
     
     min-width: calc(var(--screen-size) - var(--cell-size)); width: calc(var(--screen-size) - var(--cell-size)); max-width: calc(var(--screen-size) - var(--cell-size));
     min-height: calc(var(--screen-size) - var(--cell-size)); height: calc(var(--screen-size) - var(--cell-size)); max-height: calc(var(--screen-size) - var(--cell-size));
@@ -332,12 +337,11 @@ main {
     border-radius: 8px;
     background-color: var(--grey-30);
 
-    font-size: 32px;
+    /*font-size: 32px;*/
     color: var(--grey-80);
     text-align: center;
 
     .progress-container {
-      margin-top: 10px;
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -352,8 +356,32 @@ main {
         min-height: 20px;
         background-color: var(--grey-80);
         animation-name: progress;
-        animation-duration: 4s;
+        animation-duration: 3.5s;
         animation-timing-function: linear;
+      }
+    }
+
+    .fish-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+      border: 2px solid var(--grey-80);
+      padding: 8px;
+      gap: 8px;
+
+      .fish-card-bloc {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .fish-card-img {
+        height: 100px;
+        border: 1px solid red;
+        aspect-ratio: 16/9;
       }
     }
   }

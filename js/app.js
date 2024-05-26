@@ -1,8 +1,10 @@
 import { AREAS } from "./areas.data.js";
 import { CHARACTERS } from "./characters.data.js";
+import { requestWakeLock } from "./wakelock.js";
 /* ========================================================================= */
 /* =============================== EXECUTION =============================== */
 /* ========================================================================= */
+await requestWakeLock();
 
 const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
 
@@ -105,7 +107,7 @@ window.continueFishing = continueFishing;
 /* ------------------ area ------------------ */
 let currentArea = AREAS[0];
 
-document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/${currentArea.img}.gif')`;
+document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/${currentArea.id}/${currentArea.img}.gif')`;
 currentArea.walkableCells.forEach(cell => {
   document.getElementById(cell).classList.add('walkable');
 });
@@ -417,7 +419,7 @@ const generateFishRandomlyXTimes = (interval, repetitions) => {
 
 let rndCell = getRandomSwimmableCellCoordinates();
 generateFish(rndCell.letterIndex, rndCell.column);
-generateFishRandomlyXTimes(randomIntFromInterval(7134, 14798), 100);
+generateFishRandomlyXTimes(randomIntFromInterval(7134, 14798), 1000);
 
 const launchBattle = (domFish) => {
   document.getElementById('buttonsArea').innerHTML = '';
@@ -428,9 +430,7 @@ const launchBattle = (domFish) => {
 
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup">
-      <div class="loss">
-        Battaille en cours
-      </div>
+      <span>Lutte acharnée en cours !</span>
       <div class="progress-container"><div id="progressBar" class="progress-bar"></div></div>
     </div>
   `;
@@ -441,24 +441,71 @@ const launchBattle = (domFish) => {
     let rnd = Math.random();
     
     if (rnd < 0.5) {
-      // Battaille foirée
+      // Bataille foirée
       document.getElementById('popup').innerHTML = ``;
       document.getElementById('popup').innerHTML = `
-        <div class="loss">
-          Râté, le poisson s'est échappé...
-        </div>
+        <span>Râté, le poisson s'est échappé...</span>
       `;
     } else {
       document.getElementById('popup').innerHTML = ``;
       document.getElementById('popup').innerHTML = `
-        <div class="loss">
-          Félicitation !<br>Vous avez attrapé un ...
-        </div>
+        <span>
+          Félicitation !<br>
+          Vous avez attrapé :
+        </span>
+        ${getIndividualFishCard(getRandomIndividual(getRandomAreaFishType()))}
       `;
     }
     setPlayerAvailableCells();
     document.getElementById('buttonsArea').innerHTML = `<button class="continue-button" onclick="continueFishing()">Continuer</button>`;
-  }, 4000);
-
-  //
+  }, 3500);
 }
+
+//
+
+const getRandomAreaFishType = () => {
+  //console.table(currentArea.fishes);
+  let fishType = currentArea.fishes[randomIntFromInterval(0, currentArea.fishes.length - 1)];
+  //console.table(fishType);
+  return fishType;
+};
+
+const getRandomIndividual = (fishType) => {
+  console.table(fishType);
+  // à revoir
+  let induvidualLength = randomIntFromInterval(fishType.minLength, fishType.maxLength);
+  console.log(induvidualLength);
+  let induvidualMass = randomIntFromInterval(fishType.minMass, fishType.maxMass);
+  let individualSaturation = randomIntFromInterval(50, 100);
+
+  return {
+    id: fishType.id,
+    length: induvidualLength,
+    mass: induvidualMass,
+    saturation: individualSaturation,
+  }
+}
+
+const getFishById = (id) => {
+  return currentArea.fishes.filter((fish) => fish.id == id)[0];
+}
+
+const getIndividualFishCard = (individualFish) => {
+  const baseFish = getFishById(individualFish.id);
+
+  return `
+    <div class="fish-card">
+      <div class="fish-card-bloc fish-name">
+        <span>${baseFish.commonName}</span>
+        <span>(${baseFish.scientificName})</span>
+      </div>
+      <img class="fish-card-img" style="" src="./medias/images/areas/${currentArea.id}/fishes/${baseFish.img}.png" />
+      <div class="fish-card-bloc">
+        <span>Taille : ${individualFish.length}cm</span>
+        <span>Poids : ${individualFish.mass}g</span>
+      </div>
+    </div>
+  `;
+}
+
+getRandomAreaFishType();

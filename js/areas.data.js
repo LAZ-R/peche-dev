@@ -57,5 +57,37 @@ export const AREAS = [
       'N2', 'N3', 'N4', 'N5', 'N6', 'N7', 'N8', 'N9', 'N10', 'N11', 'N12', 'N13', 'N14', 'N15',
       'O3', 'O4', 'O5', 'O12', 'O13'
     ],
+    fishes: [
+      {
+        id: 'salmoTrutta',
+        img: '',
+        commonName: 'Truite commune',
+        scientificName: 'Salmo trutta',
+        minLength: 18,
+        maxLength: 49,
+        minMass: 100,
+        maxMass: 3000,
+      },
+      {
+        id: 'tincaTinca',
+        img: '',
+        commonName: 'Tanche',
+        scientificName: 'Tinca tinca',
+        minLength: 27,
+        maxLength: 45,
+        minMass: 425,
+        maxMass: 1122,
+      },
+      {
+        id: 'percaFluviatilis',
+        img: '',
+        commonName: 'Perche',
+        scientificName: 'Perca fluviatilis',
+        minLength: 15,
+        maxLength: 50,
+        minMass: 200,
+        maxMass: 1982,
+      },
+    ],
   }
 ];
