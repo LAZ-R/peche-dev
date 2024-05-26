@@ -1,0 +1,1 @@
+export const CHARACTERS = ['sa', 'ch', 'pe', 'fm'];

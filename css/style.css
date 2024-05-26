@@ -1,0 +1,224 @@
+/* ==========================
+ Inter
+===========================*/
+
+@font-face { font-family: "inter"; src: url("../medias/fonts/inter/Inter.var.woff2") format("woff2"); }
+@font-face { font-family: "inter"; font-style: italic; src: url("../medias/fonts/inter/Inter-italic.var.woff2") format("woff2"); }
+
+/* ---------------------------------------------------------------------- */
+
+:root { 
+  font-family: 'inter', sans-serif;
+  font-weight: 400;
+  font-size: 1em;
+}
+@supports (font-variation-settings: normal) {
+  :root { 
+    font-family: 'inter', sans-serif;
+  }
+}
+
+/* ---------------------------------------------------------------------- */
+
+:root {
+  /* ########################################################################
+  --------------------------------- COLORS ---------------------------------
+  ######################################################################## */
+
+  /* Greys */
+  --grey-90: #191919;
+  --filter--to-grey-90: brightness(0) saturate(100%) invert(0%) sepia(1%) saturate(430%) hue-rotate(344deg) brightness(103%) contrast(80%);
+
+  --grey-80: #333333;
+  --filter--to-grey-80: brightness(0) saturate(100%) invert(16%) sepia(12%) saturate(2%) hue-rotate(314deg) brightness(90%) contrast(86%);
+
+  --grey-70: #4d4d4d;
+  --filter--to-grey-70: brightness(0) saturate(100%) invert(26%) sepia(0%) saturate(1302%) hue-rotate(237deg) brightness(107%) contrast(88%);
+
+  --grey-60: #666666;
+  --filter--to-grey-60: brightness(0) saturate(100%) invert(42%) sepia(0%) saturate(0%) hue-rotate(321deg) brightness(92%) contrast(90%);
+
+  --grey-50: #808080;
+  --filter--to-grey-50: brightness(0) saturate(100%) invert(53%) sepia(0%) saturate(967%) hue-rotate(187deg) brightness(94%) contrast(82%);
+
+  --grey-40: #999999;
+  --filter--to-grey-40: brightness(0) saturate(100%) invert(75%) sepia(0%) saturate(256%) hue-rotate(167deg) brightness(80%) contrast(99%);
+
+  --grey-30: #b3b3b3;
+  --filter--to-grey-30: brightness(0) saturate(100%) invert(71%) sepia(0%) saturate(0%) hue-rotate(344deg) brightness(103%) contrast(88%);
+
+  --grey-20: #cccccc;
+  --filter--to-grey-20: brightness(0) saturate(100%) invert(68%) sepia(98%) saturate(0%) hue-rotate(134deg) brightness(100%) contrast(95%);
+
+  --grey-10: #e6e6e6;
+  --filter--to-grey-10: brightness(0) saturate(100%) invert(98%) sepia(13%) saturate(70%) hue-rotate(179deg) brightness(111%) contrast(80%);
+
+  --filter--to-white: brightness(0) saturate(100%) invert(99%) sepia(7%) saturate(13%) hue-rotate(26deg) brightness(98%) contrast(104%);
+
+  --screen-size: 100svw;
+  --cell-size: calc(var(--screen-size) / 16);
+  --cross-button-size: 50px;
+  --cross-size: calc(3 * var(--cross-button-size));
+
+  --box-shadow: 0px 5px 8px #00000086;
+  --box-shadow-inset: 0px 5px 8px #000000bd inset;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  display: flex;
+  margin: 0;
+  min-width: 100dvw; width: 100dvw; max-width: 100dvw;
+  min-height: 100svh; height: fit-content;
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-width: 100dvw; width: 100dvw; max-width: 100dvw;
+  padding: 0;
+  /* gap: 2rem; */
+  /* background-color: #e2e0d3; */
+  background-color: var(--grey-80);
+  color: var(--grey-30);
+
+  .top-area {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
+    min-height: 7svh; height: 7svh; max-height: 7svh;
+  }
+
+  .screen-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
+    min-height: var(--screen-size); height: var(--screen-size); max-height: var(--screen-size);
+    background-image: url('../medias/images/areas/test-100.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    .screen-line {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
+      min-height: var(--cell-size); height: var(--cell-size); max-height: var(--cell-size);
+      /* border: 1px solid red; */
+
+      .screen-cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: var(--cell-size); width: var(--cell-size); max-width: var(--cell-size);
+        min-height: var(--cell-size); height: var(--cell-size); max-height: var(--cell-size);
+        /* border: 1px solid #00000060; */
+
+        &:active {
+          background-color: aqua;
+        }
+
+        .cell-name {
+          display: none; /* <----------------------------------------------------------- */
+          color: black;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .buttons-area {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5svw;
+    min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
+    min-height: calc(var(--cross-size) + 10svw); height: calc(var(--cross-size) + 10svw); max-height: calc(var(--cross-size) + 10svw);
+
+    .cross-container {
+      position: relative;
+      display: flex;
+      min-width: var(--cross-size); width: var(--cross-size); max-width: var(--cross-size);
+      min-height: var(--cross-size); height: var(--cross-size); max-height: var(--cross-size);
+
+      .cross-button {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: var(--cross-button-size); width: var(--cross-button-size); max-width: var(--cross-button-size);
+        min-height: var(--cross-button-size); height: var(--cross-button-size); max-height: var(--cross-button-size);
+        border-radius: 10px;
+        border: none;
+        padding: 0;
+        margin: 0;
+        background-color: var(--grey-60);
+        box-shadow: var(--box-shadow);
+
+        &:active {
+          background-color: var(--grey-60);
+          box-shadow: var(--box-shadow-inset);
+
+          & > .button-caret {
+            filter: var(--filter--to-grey-70);
+          }
+        }
+
+        & > .button-caret {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-width: var(--cross-button-size); width: var(--cross-button-size); max-width: var(--cross-button-size);
+          min-height: var(--cross-button-size); height: var(--cross-button-size); max-height: var(--cross-button-size);
+          border: none;
+          padding: 0;
+          margin: 0;
+          filter: var(--filter--to-grey-80);
+        }
+        
+        &.left {
+          left: 0;
+          top: var(--cross-button-size);
+        }
+        &.up {
+          left: var(--cross-button-size);
+          top: 0;
+        }
+        &.right {
+          left: calc(2 * var(--cross-button-size));
+          top: var(--cross-button-size);
+        }
+        &.down {
+          left: var(--cross-button-size);
+          top: calc(2 * var(--cross-button-size));
+        }
+      }
+    }
+  }
+
+  .player {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    min-width: var(--cell-size); width: var(--cell-size); max-width: var(--cell-size);
+    min-height: var(--cell-size); height: var(--cell-size); max-height: var(--cell-size);
+    background-image: url('../medias/images/player/player-front.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transition: left .2s linear, top .2s linear;
+  }
+}
