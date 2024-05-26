@@ -55,7 +55,7 @@ document.getElementById('main').innerHTML = `
 /* ------------------ area ------------------ */
 let currentArea = AREAS[0];
 
-document.getElementById('screenArea').style.backgroundImage = `url('../medias/images/areas/${currentArea.img}.gif')`;
+document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/${currentArea.img}.gif')`;
 currentArea.walkableCells.forEach(cell => {
   document.getElementById(cell).classList.add('walkable');
 });
@@ -64,10 +64,10 @@ currentArea.walkableCells.forEach(cell => {
 
 let currentCharacterId = CHARACTERS[3];
 const currentCharacter = {
-  front: `../medias/images/characters/${currentCharacterId}-front.png`,
-  back: `../medias/images/characters/${currentCharacterId}-back.png`,
-  left: `../medias/images/characters/${currentCharacterId}-left.png`,
-  right: `../medias/images/characters/${currentCharacterId}-right.png`,
+  front: `./medias/images/characters/${currentCharacterId}-front.png`,
+  back: `./medias/images/characters/${currentCharacterId}-back.png`,
+  left: `./medias/images/characters/${currentCharacterId}-left.png`,
+  right: `./medias/images/characters/${currentCharacterId}-right.png`,
 };
 
 let currentPlayerLineLetterIndex = currentArea.spawnLine - 1;
