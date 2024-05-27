@@ -60,6 +60,26 @@ export const AREAS = [
     fishes: [
       /* https://www.peche69.fr/Liste_fiche_poisson/4529-tout-savoir-sur-les-poissons-d-eau-douce.htm?ip=2&op=fp.FIP_NOM+asc&cp=2be5d7915194da7c5fb2&mp=10 */
       {
+        id: 'rutilusRutilus',
+        img: 'rutilusRutilus', // à faire ------------
+        commonName: 'Gardon',
+        scientificName: 'Rutilus rutilus',
+        minLength: 22,
+        maxLength: 32,
+        minMass: 250,
+        maxMass: 600,
+      },
+      {
+        id: 'gasterosteusAculeatus',
+        img: 'gasterosteusAculeatus', // à faire ------------
+        commonName: 'Épinoche',
+        scientificName: 'Gasterosteus aculeatus',
+        minLength: 4,
+        maxLength: 9,
+        minMass: 1,
+        maxMass: 7,
+      },
+      {
         id: 'salmoTrutta',
         img: 'salmoTrutta',
         commonName: 'Truite commune',
@@ -88,6 +108,26 @@ export const AREAS = [
         maxLength: 50,
         minMass: 200,
         maxMass: 1982,
+      },
+      {
+        id: 'gobioGobio',
+        img: 'gobioGobio', // à faire ------------
+        commonName: 'Goujon',
+        scientificName: 'Gobio gobio',
+        minLength: 8,
+        maxLength: 21,
+        minMass: 20,
+        maxMass: 40,
+      },
+      {
+        id: 'lotaLota',
+        img: 'lotaLota', // à faire ------------
+        commonName: 'Lote',
+        scientificName: 'Lota lota',
+        minLength: 35,
+        maxLength: 45,
+        minMass: 350,
+        maxMass: 600,
       },
     ],
   }

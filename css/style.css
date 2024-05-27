@@ -170,7 +170,7 @@ main {
 
         &.selectable {
           /* border: 2px solid #ffff00; */
-          border: 2px solid #ffffff;
+          border: 2px solid #ffffffb9;
           z-index: 100;
         }
 
@@ -512,9 +512,9 @@ main {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width: 80%;
+      min-width: 70%; width: fit-content; max-width: 100%;
       border: 2px dotted var(--grey-40);
-      padding: 8px;
+      padding: 8px 16px;
       gap: 8px;
 
       .fish-card-bloc {
