@@ -70,6 +70,7 @@
   font-family: 'retro-gaming', sans-serif;
   font-weight: 400;
   font-size: 16px;
+  user-select: none;
 }
 
 html, body {
@@ -168,22 +169,29 @@ main {
         }
 
         &.selectable {
-          border: 2px solid #ffff00;
+          /* border: 2px solid #ffff00; */
+          border: 2px solid #ffffff;
           z-index: 100;
         }
 
         &.unselectable {
-          border: 2px solid #ffffff6c;
+          /* border: 2px solid #ffffff6c; */
+          border: none;
         }
 
         &.selected {
           border: 2px solid #00ff00;
           background-color: #00ff004b;
+
+          /* border: 2px solid #00ffff;
+          background-color: #00ffff4b; */
         }
 
         &.touched {
           border: 3px solid #f71aff;
           background-color: #e953fd4b;
+          /* border: 2px solid #00ff00;
+          background-color: #00ff004b; */
         }
 
         .cell-name {

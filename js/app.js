@@ -14,6 +14,13 @@ function randomIntFromInterval(min, max) { // min and max included
 // Lettres des lignes de la grille
 const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
 
+const minSpawnTime = 7134;
+const maxSpawnTime = 14798;
+const spawnRepetitions = 1000;
+
+const minFishMovement = 16;
+const maxFishMovement = 64;
+
 /* ========================================================================= */
 /* ============================ Génération DOM ============================= */
 /* ========================================================================= */
@@ -47,7 +54,7 @@ const defineArea = (area) => {
   AREA_FISHES = [];
   let rndCell = getRandomSwimmableCellCoordinates();
   generateFish(rndCell.letterIndex, rndCell.column);
-  generateFishRandomlyXTimes(randomIntFromInterval(7134, 14798), 1000);
+  generateFishRandomlyXTimes(randomIntFromInterval(minSpawnTime, maxSpawnTime), spawnRepetitions);
 }
 
 /* ############################### Area page ############################### */
@@ -113,7 +120,109 @@ const renderScreenLines = () => {
   return txt;
 }
 
+const setTouchEventCross = () => {
+  let stillNeedToMove = true;
 
+  // LEFT ------------------
+  const crossLeft = document.getElementById('crossLeft');
+  let leftTouchEventIntervalId = '';
+
+  crossLeft.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    stillNeedToMove = true;
+
+    movePlayer('left');
+
+    setTimeout(() => {
+      if (stillNeedToMove) {
+        leftTouchEventIntervalId = setInterval(() => {
+          movePlayer('left');
+        }, 100);
+      }
+    }, 200);
+  });
+
+  crossLeft.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    clearInterval(leftTouchEventIntervalId);
+    stillNeedToMove = false;
+  });
+
+  // UP ------------------
+  const crossUp = document.getElementById('crossUp');
+  let upTouchEventIntervalId = '';
+
+  crossUp.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    stillNeedToMove = true;
+
+    movePlayer('up');
+
+    setTimeout(() => {
+      if (stillNeedToMove) {
+        upTouchEventIntervalId = setInterval(() => {
+          movePlayer('up');
+        }, 100);
+      }
+    }, 200);
+  });
+
+  crossUp.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    clearInterval(upTouchEventIntervalId);
+    stillNeedToMove = false;
+  });
+
+  // RIGHT ------------------
+  const crossRight = document.getElementById('crossRight');
+  let rightTouchEventIntervalId = '';
+
+  crossRight.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    stillNeedToMove = true;
+
+    movePlayer('right');
+
+    setTimeout(() => {
+      if (stillNeedToMove) {
+        rightTouchEventIntervalId = setInterval(() => {
+          movePlayer('right');
+        }, 100);
+      }
+    }, 200);
+  });
+
+  crossRight.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    clearInterval(rightTouchEventIntervalId);
+    stillNeedToMove = false;
+  });
+
+  // RIGHT ------------------
+  const crossDown = document.getElementById('crossDown');
+  let downTouchEventIntervalId = '';
+
+  crossDown.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    stillNeedToMove = true;
+
+    movePlayer('down');
+
+    setTimeout(() => {
+      if (stillNeedToMove) {
+        downTouchEventIntervalId = setInterval(() => {
+          movePlayer('down');
+        }, 100);
+      }
+    }, 200);
+  });
+
+  crossDown.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    clearInterval(downTouchEventIntervalId);
+    stillNeedToMove = false;
+  });
+}
 
 // Render de la grille
 const renderBlankTemplate = () => {
@@ -125,13 +234,14 @@ const renderBlankTemplate = () => {
     </div>
     <div id="buttonsArea" class="buttons-area">
       <div class="cross-container">
-        <button class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-        <button class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-        <button class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-        <button class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
+        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
+        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
+        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
       </div>
     </div>
   `;
+  setTouchEventCross();
 }
 
 /* =============================== Area =============================== */
@@ -172,6 +282,8 @@ const setPlayerAvailableCell = (cell) => {
 }
 
 const setPlayerAvailableCells = () => {
+  // Canne à pêche 1
+
   let leftCellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 1}`;
   let upCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn}`;
   let rightCellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 1}`;
@@ -181,6 +293,28 @@ const setPlayerAvailableCells = () => {
   setPlayerAvailableCell(document.getElementById(upCellId));
   setPlayerAvailableCell(document.getElementById(rightCellId));
   setPlayerAvailableCell(document.getElementById(downCellId));
+
+  if (currentRod != 'canne1') {
+    // Canne à pêche 2
+  
+    let left2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}`;
+    let leftUpCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 1}`;
+    let up2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn}`;
+    let upRightCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 1}`;
+    let right2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 2}`;
+    let rightDownCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 1}`;
+    let down2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn}`;
+    let downLeftCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 1}`;
+
+    setPlayerAvailableCell(document.getElementById(left2CellId));
+    setPlayerAvailableCell(document.getElementById(leftUpCellId));
+    setPlayerAvailableCell(document.getElementById(up2CellId));
+    setPlayerAvailableCell(document.getElementById(upRightCellId));
+    setPlayerAvailableCell(document.getElementById(right2CellId));
+    setPlayerAvailableCell(document.getElementById(rightDownCellId));
+    setPlayerAvailableCell(document.getElementById(down2CellId));
+    setPlayerAvailableCell(document.getElementById(downLeftCellId));
+  }
 }
 
 const setPlayerSpawn = () => {
@@ -211,6 +345,28 @@ const clearPlayerAvailableCells = () => {
   clearPlayerAvailableCell(document.getElementById(upCellId));
   clearPlayerAvailableCell(document.getElementById(rightCellId));
   clearPlayerAvailableCell(document.getElementById(downCellId));
+
+  if (currentRod != 'canne1') {
+    // Canne à pêche 2
+  
+    let left2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}`;
+    let leftUpCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 1}`;
+    let up2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn}`;
+    let upRightCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 1}`;
+    let right2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 2}`;
+    let rightDownCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 1}`;
+    let down2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn}`;
+    let downLeftCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 1}`;
+
+    clearPlayerAvailableCell(document.getElementById(left2CellId));
+    clearPlayerAvailableCell(document.getElementById(leftUpCellId));
+    clearPlayerAvailableCell(document.getElementById(up2CellId));
+    clearPlayerAvailableCell(document.getElementById(upRightCellId));
+    clearPlayerAvailableCell(document.getElementById(right2CellId));
+    clearPlayerAvailableCell(document.getElementById(rightDownCellId));
+    clearPlayerAvailableCell(document.getElementById(down2CellId));
+    clearPlayerAvailableCell(document.getElementById(downLeftCellId));
+  }
 }
 
 /* =============================== Fish =============================== */
@@ -352,7 +508,7 @@ const generateFish = (letterIndex, column) => {
   FISH.style.left = `calc(${fish.currentColumn - 1} * var(--cell-size))`;
 
   AREA_FISHES.push(fish);
-  moveFishRandomlyXTimes(AREA_FISHES[AREA_FISHES.length - 1], 1000, randomIntFromInterval(16, 64));
+  moveFishRandomlyXTimes(AREA_FISHES[AREA_FISHES.length - 1], 1000, randomIntFromInterval(minFishMovement, maxFishMovement));
 }
 
 const generateFishRandomlyXTimes = (interval, repetitions) => {
@@ -588,6 +744,7 @@ window.onClosePopupClick = onClosePopupClick;
 
 // Top part -----------------------------------------
 const onHomeClick = () => {
+  isSelected = false;
   AREA_FISHES.forEach(fish => {
     clearInterval(fish.intervalId);
   });
@@ -666,13 +823,18 @@ window.movePlayer = movePlayer;
 
 const onCellClick = (cellId) => {
   //console.log(cellId);
+  const CELL = document.getElementById(cellId);
+
   if (!isSelected) {
-    const CELL = document.getElementById(cellId);
     if (CELL.classList.contains('selectable')) {
       CELL.classList.replace('selectable', 'selected');
       isSelected = true;
       document.getElementById('buttonsArea').innerHTML = '';
       document.getElementById('buttonsArea').innerHTML = `<button class="abort-button" onclick="abortFishing('${cellId}')">ANNULER</button>`;
+    }
+  } else {
+    if (CELL.classList.contains('selected')) {
+      abortFishing(cellId);
     }
   }
 }
@@ -688,11 +850,12 @@ const abortFishing = (cellId) => {
       document.getElementById('buttonsArea').innerHTML = '';
       document.getElementById('buttonsArea').innerHTML = `
       <div class="cross-container">
-        <button class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-        <button class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-        <button class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-        <button class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
+        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
+        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
+        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
       </div>`;
+      setTouchEventCross();
     }
   }
 }
@@ -703,11 +866,12 @@ const continueFishing = () => {
   document.getElementById('buttonsArea').innerHTML = '';
   document.getElementById('buttonsArea').innerHTML = `
   <div class="cross-container">
-    <button class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-    <button class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-    <button class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-    <button class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+    <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
+    <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
+    <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
+    <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
   </div>`;
+  setTouchEventCross();
   document.getElementById('popup').remove();
 }
 window.continueFishing = continueFishing;
@@ -738,6 +902,7 @@ renderHomeTemplate();
 
 
 let currentArea = AREAS[0];
+let currentRod = 'canne1';
 
 let isSelected = false;
 let fishGeneration = '';
