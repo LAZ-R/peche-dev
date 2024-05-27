@@ -317,10 +317,26 @@ const getRandomAreaFishType = () => {
 };
 
 const getRandomIndividual = (fishType) => {
-  // à revoir -------
   let induvidualLength = randomIntFromInterval(fishType.minLength, fishType.maxLength);
-  let induvidualMass = randomIntFromInterval(fishType.minMass, fishType.maxMass);
+
+  // Définir une relation linéaire entre taille et masse
+  const slope = (fishType.maxMass - fishType.minMass) / (fishType.maxLength - fishType.minLength);
+  const intercept = fishType.minMass - slope * fishType.minLength;
+
+  // Calculer la masse attendue basée sur la taille
+  const expectedMass = slope * induvidualLength + intercept;
+
+  // Ajouter une variabilité à la masse (ici on utilise une variabilité de ±10% de la masse attendue)
+  const variability = 0.1; // 10%
+  const minMassWithVariability = expectedMass * (1 - variability);
+  const maxMassWithVariability = expectedMass * (1 + variability);
+
+  let induvidualMass = randomIntFromInterval(
+    Math.max(fishType.minMass, Math.floor(minMassWithVariability)),
+    Math.min(fishType.maxMass, Math.ceil(maxMassWithVariability))
+  );
   // ----------------
+
   let individualSaturation = randomIntFromInterval(50, 100);
 
   return {
@@ -372,7 +388,7 @@ const launchBattle = (domFish) => {
   setTimeout(() => {
     let rnd = Math.random();
     
-    if (rnd < 0.5) { // Bataille foirée
+    if (rnd < 0.33) { // Bataille foirée
       document.getElementById('popup').innerHTML = ``;
       document.getElementById('popup').innerHTML = `
         <span>Râté, le poisson s'est échappé...</span>
