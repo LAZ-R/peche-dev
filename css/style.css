@@ -94,11 +94,15 @@ main {
 
   .top-area {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    padding: 0;
+    padding: 0 8px;
     min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
     min-height: 7svh; height: 7svh; max-height: 7svh;
+
+    .vivier-button {
+      opacity: 0;
+    }
   }
 
   .screen-area {
@@ -109,10 +113,38 @@ main {
     align-items: center;
     min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
     min-height: var(--screen-size); height: var(--screen-size); max-height: var(--screen-size);
-    background-image: url('../medias/images/areas/test-100.gif');
+    /* background-image: url('../medias/images/areas/test-100.gif'); */
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+
+    &.home-screen {
+      padding: var(--cell-size);
+      background-image: url('../medias/images/areas/home-100.gif');
+      gap: var(--cell-size);
+
+      .home-screen-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: fit-content; width: fit-content; max-width: fit-content;
+        min-height: var(--cross-button-size); height: var(--cross-button-size); max-height: var(--cross-button-size);
+        border-radius: 8px;
+        border: none;
+        padding: 0 20px;
+        margin: 0;
+        background-color: var(--grey-80);
+        color: white;
+        font-weight: 600;
+        letter-spacing: 1px;
+        /* box-shadow: var(--box-shadow); */
+        /* text-transform: uppercase; */
+        
+        &:disabled {
+          opacity: .5;
+        }
+      }
+    }
 
     .screen-line {
       display: flex;
@@ -170,6 +202,10 @@ main {
     padding: 5svw;
     min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
     min-height: calc(var(--cross-size) + 10svw); height: calc(var(--cross-size) + 10svw); max-height: calc(var(--cross-size) + 10svw);
+
+    &.home-screen {
+      /* background-color: rebeccapurple; */
+    }
 
     .cross-container {
       position: relative;
@@ -335,11 +371,113 @@ main {
 
     border: 2px solid var(--grey-80);
     border-radius: 8px;
-    background-color: var(--grey-30);
+    background-color: var(--grey-20);
 
     /*font-size: 32px;*/
     color: var(--grey-80);
     text-align: center;
+
+    &.home-screen {
+      justify-content: space-between;
+
+      .popup-top {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        .close-popup-button {
+        }
+      }
+
+      .area-selector {
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid red; */
+        width: 100%;
+        min-height: calc(100% - (2 * var(--cell-size))); height: calc(100% - (2 * var(--cell-size))); max-height: calc(100% - (2 * var(--cell-size)));
+        overflow-y: scroll;
+        gap: calc(2 * var(--cell-size));
+
+        .area-line {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          width: 100%;
+          height: fit-content;
+          gap: var(--cell-size);
+
+          .area-button {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 50%;
+            min-height: 170px; height: 170px; max-height: 170px;
+            padding: 12px;
+            gap: 6px;
+            border: none;
+            box-shadow: var(--box-shadow);
+
+            > img {
+              aspect-ratio: 1/1;
+              width: 100%;
+            }
+
+            &:disabled {
+              opacity: .5;
+
+              > .no-img {
+                aspect-ratio: 1/1;
+                width: 100%;
+                background-color: black;
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+    &.vivier {
+      justify-content: space-between;
+
+      .popup-top {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        .close-popup-button {
+        }
+      }
+
+      .area-vivier {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: calc(100% - (2 * var(--cell-size))); height: calc(100% - (2 * var(--cell-size))); max-height: calc(100% - (2 * var(--cell-size)));
+        overflow-y: scroll;
+        gap: var(--cell-size);
+
+        .vivier-fish-card {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+
+          & > img {
+            aspect-ratio: 16/9;
+            height: 50px;
+            border: 1px solid red;
+          }
+
+          & > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+          }
+        }
+      }
+    }
 
     .progress-container {
       display: flex;
@@ -347,7 +485,7 @@ main {
       align-items: center;
       min-width: 80%;
       min-height: 20px;
-      background-color: var(--grey-50);
+      background-color: var(--grey-20);
       border: 2px solid var(--grey-80);
 
       .progress-bar {
