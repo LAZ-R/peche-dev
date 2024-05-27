@@ -234,14 +234,13 @@ main {
         margin: 0;
         background-color: var(--grey-60);
         box-shadow: var(--box-shadow);
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
 
-        &:active {
+        &.pressed {
           background-color: var(--grey-60);
           box-shadow: var(--box-shadow-inset);
-
-          & > .button-caret {
-            filter: var(--filter--to-grey-70);
-          }
         }
 
         & > .button-caret {
@@ -257,18 +256,22 @@ main {
         }
         
         &.left {
+          background-image: url('../medias/images/icons/caret-left-grey.png');
           left: 0;
           top: var(--cross-button-size);
         }
         &.up {
+          background-image: url('../medias/images/icons/caret-up-grey.png');
           left: var(--cross-button-size);
           top: 0;
         }
         &.right {
+          background-image: url('../medias/images/icons/caret-right-grey.png');
           left: calc(2 * var(--cross-button-size));
           top: var(--cross-button-size);
         }
         &.down {
+          background-image: url('../medias/images/icons/caret-down-grey.png');
           left: var(--cross-button-size);
           top: calc(2 * var(--cross-button-size));
         }

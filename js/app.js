@@ -130,6 +130,7 @@ const setTouchEventCross = () => {
   crossLeft.addEventListener('touchstart', (event) => {
     event.preventDefault();
     stillNeedToMove = true;
+    crossLeft.classList.add('pressed');
 
     movePlayer('left');
 
@@ -146,6 +147,7 @@ const setTouchEventCross = () => {
     event.preventDefault();
     clearInterval(leftTouchEventIntervalId);
     stillNeedToMove = false;
+    crossLeft.classList.remove('pressed');
   });
 
   // UP ------------------
@@ -155,6 +157,7 @@ const setTouchEventCross = () => {
   crossUp.addEventListener('touchstart', (event) => {
     event.preventDefault();
     stillNeedToMove = true;
+    crossUp.classList.add('pressed');
 
     movePlayer('up');
 
@@ -171,6 +174,7 @@ const setTouchEventCross = () => {
     event.preventDefault();
     clearInterval(upTouchEventIntervalId);
     stillNeedToMove = false;
+    crossUp.classList.remove('pressed');
   });
 
   // RIGHT ------------------
@@ -180,6 +184,7 @@ const setTouchEventCross = () => {
   crossRight.addEventListener('touchstart', (event) => {
     event.preventDefault();
     stillNeedToMove = true;
+    crossRight.classList.add('pressed');
 
     movePlayer('right');
 
@@ -196,6 +201,7 @@ const setTouchEventCross = () => {
     event.preventDefault();
     clearInterval(rightTouchEventIntervalId);
     stillNeedToMove = false;
+    crossRight.classList.remove('pressed');
   });
 
   // RIGHT ------------------
@@ -205,6 +211,7 @@ const setTouchEventCross = () => {
   crossDown.addEventListener('touchstart', (event) => {
     event.preventDefault();
     stillNeedToMove = true;
+    crossDown.classList.add('pressed');
 
     movePlayer('down');
 
@@ -221,6 +228,7 @@ const setTouchEventCross = () => {
     event.preventDefault();
     clearInterval(downTouchEventIntervalId);
     stillNeedToMove = false;
+    crossDown.classList.remove('pressed');
   });
 }
 
@@ -234,10 +242,10 @@ const renderBlankTemplate = () => {
     </div>
     <div id="buttonsArea" class="buttons-area">
       <div class="cross-container">
-        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"></button>
+        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
+        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
+        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
       </div>
     </div>
   `;
@@ -850,10 +858,10 @@ const abortFishing = (cellId) => {
       document.getElementById('buttonsArea').innerHTML = '';
       document.getElementById('buttonsArea').innerHTML = `
       <div class="cross-container">
-        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-grey.png"/></button>
+        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
+        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
+        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
       </div>`;
       setTouchEventCross();
     }
@@ -866,10 +874,10 @@ const continueFishing = () => {
   document.getElementById('buttonsArea').innerHTML = '';
   document.getElementById('buttonsArea').innerHTML = `
   <div class="cross-container">
-    <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-    <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-    <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-    <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+    <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-grey.png"/></button>
+    <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
+    <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
+    <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
   </div>`;
   setTouchEventCross();
   document.getElementById('popup').remove();
