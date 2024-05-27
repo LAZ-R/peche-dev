@@ -1,3 +1,4 @@
+import { APP_VERSION } from "../properties.js";
 import { AREAS } from "./areas.data.js";
 import { CHARACTERS } from "./characters.data.js";
 import { requestWakeLock } from "./wakelock.js";
@@ -41,6 +42,7 @@ const renderHomeTemplate = () => {
     </div>
     <div id="buttonsArea" class="buttons-area home-screen">
     </div>
+    <span style="margin-top: auto; margin-bottom: 2svh;">v ${APP_VERSION}</span>
   `;
 }
 
@@ -858,7 +860,7 @@ const abortFishing = (cellId) => {
       document.getElementById('buttonsArea').innerHTML = '';
       document.getElementById('buttonsArea').innerHTML = `
       <div class="cross-container">
-        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-grey.png"/></button>
+        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"></button>
         <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
         <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
         <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
@@ -874,7 +876,7 @@ const continueFishing = () => {
   document.getElementById('buttonsArea').innerHTML = '';
   document.getElementById('buttonsArea').innerHTML = `
   <div class="cross-container">
-    <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-grey.png"/></button>
+    <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"></button>
     <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
     <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
     <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
@@ -910,7 +912,7 @@ renderHomeTemplate();
 
 
 let currentArea = AREAS[0];
-let currentRod = 'canne1';
+let currentRod = 'canne2';
 
 let isSelected = false;
 let fishGeneration = '';

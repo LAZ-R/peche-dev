@@ -121,7 +121,7 @@ export const AREAS = [
       },
       {
         id: 'lotaLota',
-        img: 'lotaLota', // à faire ------------
+        img: 'lotaLota',
         commonName: 'Lote',
         scientificName: 'Lota lota',
         minLength: 35,
