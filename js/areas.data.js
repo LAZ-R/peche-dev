@@ -61,7 +61,7 @@ export const AREAS = [
       /* https://www.peche69.fr/Liste_fiche_poisson/4529-tout-savoir-sur-les-poissons-d-eau-douce.htm?ip=2&op=fp.FIP_NOM+asc&cp=2be5d7915194da7c5fb2&mp=10 */
       {
         id: 'salmoTrutta',
-        img: '',
+        img: 'salmoTrutta',
         commonName: 'Truite commune',
         scientificName: 'Salmo trutta',
         minLength: 18,
@@ -71,7 +71,7 @@ export const AREAS = [
       },
       {
         id: 'tincaTinca',
-        img: '',
+        img: 'tincaTinca',
         commonName: 'Tanche',
         scientificName: 'Tinca tinca',
         minLength: 27,
@@ -81,7 +81,7 @@ export const AREAS = [
       },
       {
         id: 'percaFluviatilis',
-        img: '',
+        img: 'percaFluviatilis',
         commonName: 'Perche',
         scientificName: 'Perca fluviatilis',
         minLength: 15,

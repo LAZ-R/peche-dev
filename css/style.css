@@ -505,7 +505,7 @@ main {
       justify-content: center;
       align-items: center;
       width: 80%;
-      border: 2px solid var(--grey-80);
+      border: 2px dotted var(--grey-40);
       padding: 8px;
       gap: 8px;
 
@@ -517,8 +517,8 @@ main {
       }
 
       .fish-card-img {
-        height: 100px;
-        border: 1px solid red;
+        height: 64px;
+        /* border: 1px solid red; */
         aspect-ratio: 16/9;
       }
     }

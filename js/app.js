@@ -18,8 +18,66 @@ const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
 /* ============================ Génération DOM ============================= */
 /* ========================================================================= */
 
+/* ############################### Home page ############################### */
 
+const renderHomeTemplate = () => {
+  document.getElementById('main').innerHTML = `
+  <div id="topArea" class="top-area">
+    <span></span>
+    <span>a fishfull life</span>
+    <span></span>
+  </div>
+    <div id="screenArea" class="screen-area home-screen">
+      <button class="home-screen-button" onclick="onPlayClick()">jouer</button>
+      <button class="home-screen-button" onclick="onCustomizeClick()" disabled>personnaliser</button>
+      <button class="home-screen-button" onclick="onRecordsClick()" disabled>records</button>
+    </div>
+    <div id="buttonsArea" class="buttons-area home-screen">
+    </div>
+  `;
+}
 
+const defineArea = (area) => {
+  renderBlankTemplate();
+  currentArea = area;
+  currentPlayerLineLetterIndex = currentArea.spawnLine - 1;
+  currentPlayerColumn = currentArea.spawnColumn;
+  renderCurrentArea();
+  setPlayerSpawn();
+  AREA_FISHES = [];
+  let rndCell = getRandomSwimmableCellCoordinates();
+  generateFish(rndCell.letterIndex, rndCell.column);
+  generateFishRandomlyXTimes(randomIntFromInterval(7134, 14798), 1000);
+}
+
+/* ############################### Area page ############################### */
+
+/* ================================ Top part ================================ */
+const renderVivierFishCard = (fish) => {
+  return `
+    <div class="vivier-fish-card">
+      <img src="./medias/images/areas/${currentArea.id}/fishes/${fish.img}.png" />
+      <div>
+        <span>${fish.commonName}</span>
+        <span>(${fish.scientificName})</span>
+        <!--<span>de ${fish.minLength}cm à ${fish.maxLength}cm</span>
+        <span>de ${fish.minMass}g à ${fish.maxMass}g</span>-->
+      </div>
+    </div>
+  `;
+}
+
+const renderAreaVivier = () => {
+  let txt = '';
+  currentArea.fishes.forEach(fish => {
+    txt += renderVivierFishCard(fish);
+  });
+  return `
+    <div class="area-vivier">
+      ${txt}
+    </div>
+  `;
+}
 
 /* =============================== Cellules =============================== */
 
@@ -54,6 +112,8 @@ const renderScreenLines = () => {
   }
   return txt;
 }
+
+
 
 // Render de la grille
 const renderBlankTemplate = () => {
@@ -292,7 +352,7 @@ const generateFish = (letterIndex, column) => {
   FISH.style.left = `calc(${fish.currentColumn - 1} * var(--cell-size))`;
 
   AREA_FISHES.push(fish);
-  moveFishRandomlyXTimes(AREA_FISHES[AREA_FISHES.length - 1], 1000, randomIntFromInterval(12, 64));
+  moveFishRandomlyXTimes(AREA_FISHES[AREA_FISHES.length - 1], 1000, randomIntFromInterval(16, 64));
 }
 
 const generateFishRandomlyXTimes = (interval, repetitions) => {
@@ -378,9 +438,21 @@ const launchBattle = (domFish) => {
 
   document.getElementById('buttonsArea').innerHTML = '';
 
+  // récupération message aléatoire
+  const battleMessages = [
+    `Combat intense en cours !`,
+    `Remontée en progression...`,
+    `Ça avance, on lâche rien !`,
+    `Lutte acharnée en cours !`,
+    `On s'accroche, ça tire fort !`,
+    `La prise est amorcée !`,
+    `Ligne tendue, effort constant...`,
+    `On tire, encore un peu !`,
+    `La bataille est lancée !`,
+  ];
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup">
-      <span>Lutte acharnée en cours !</span>
+      <span>${battleMessages[randomIntFromInterval(0, battleMessages.length - 1)]}</span>
       <div class="progress-container"><div id="progressBar" class="progress-bar"></div></div>
     </div>
   `;
@@ -389,15 +461,48 @@ const launchBattle = (domFish) => {
     let rnd = Math.random();
     
     if (rnd < 0.33) { // Bataille foirée
+      // récupération message aléatoire
+      const failMessages = [
+        `Zut !<br>Le poisson s'est enfui...`,
+        `Mince alors !<br>Le poisson a réussi à s'échapper...`,
+        `Ah, pas de chance !<br>Le poisson a filé...`,
+        `Oh non !<br>Le poisson a réussi à s'échapper...`,
+        `Raté !<br>Le poisson s'est libéré...`,
+        `Oups !<br>Le poisson a pris la fuite...`,
+        `Dommage !<br>Le poisson est parti...`,
+        `Ah, c'est manqué !<br>Le poisson a disparu...`,
+        `Pas cette fois !<br>Le poisson s'est échappé...`,
+        `Tant pis !<br>Le poisson a réussi à s'enfuir...`,
+      ];
       document.getElementById('popup').innerHTML = ``;
       document.getElementById('popup').innerHTML = `
-        <span>Râté, le poisson s'est échappé...</span>
+        <span>${failMessages[randomIntFromInterval(0, failMessages.length - 1)]}</span>
       `;
     } else { // Bataille gagnée
+      // récupération message aléatoire
+      const winMessages = [
+        `Félicitations !`,
+        `Bravo !`,
+        `Bien joué !`,
+        `Super !`,
+        `Excellent !`,
+        `Chapeau !`,
+        `Magnifique !`,
+        `Génial !`,
+        `Parfait !`,
+        `Impressionnant !`,
+        `Splendide !`,
+        `Fantastique !`,
+        `Incroyable !`,
+        `Épatant !`,
+        `Admirable !`,
+        `Remarquable !`,
+        `Sensationnel !`,
+      ];
       document.getElementById('popup').innerHTML = ``;
       document.getElementById('popup').innerHTML = `
         <span>
-          Félicitation !<br>
+          ${winMessages[randomIntFromInterval(0, winMessages.length - 1)]}<br>
           Vous avez attrapé :
         </span>
         ${getIndividualFishCard(getRandomIndividual(getRandomAreaFishType()))}
@@ -412,127 +517,8 @@ const launchBattle = (domFish) => {
 /* ======================= Interactions utilisateur ======================== */
 /* ========================================================================= */
 
-const movePlayer = (direction) => {
-  if (!isPlayerMoving) {
-    isPlayerMoving = true;
-    const PLAYER = document.getElementById('player');
-    clearPlayerAvailableCells();
-    if (direction == 'left') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.left})`;
-      if (currentPlayerColumn != 1) {
-        let nextCell = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 1}`;
-        if (document.getElementById(nextCell).classList.contains('walkable')) {
-          currentPlayerColumn -= 1;
-          PLAYER.style.left = `calc(${currentPlayerColumn - 1} * var(--cell-size))`;
-        }
-      }
-    } else if (direction == 'up') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.back})`;
-      if (currentPlayerLineLetterIndex != 0) {
-        // calcul prochaine cellule
-        let nextCell = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn}`;
-        if (document.getElementById(nextCell).classList.contains('walkable')) {
-          currentPlayerLineLetterIndex -= 1;
-          PLAYER.style.top = `calc(${currentPlayerLineLetterIndex} * var(--cell-size))`;
-        }
-      }
-    } else if (direction == 'right') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.right})`;
-      if (currentPlayerColumn != 16) {
-        let nextCell = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 1}`;
-        if (document.getElementById(nextCell).classList.contains('walkable')) {    
-          currentPlayerColumn += 1;
-          PLAYER.style.left = `calc(${currentPlayerColumn - 1} * var(--cell-size))`;
-        }
-      }
-    } else if (direction == 'down') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.front})`;
-      if (currentPlayerLineLetterIndex != 15) {
-        let nextCell = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn}`;
-        if (document.getElementById(nextCell).classList.contains('walkable')) {
-          currentPlayerLineLetterIndex += 1;
-          PLAYER.style.top = `calc(${currentPlayerLineLetterIndex} * var(--cell-size))`;
-        }
-      }
-    }
-    
-    setTimeout(() => {
-      isPlayerMoving = false;
-      setPlayerAvailableCells();
-    }, 200);
-  }
-}
-window.movePlayer = movePlayer;
 
-
-const onCellClick = (cellId) => {
-  //console.log(cellId);
-  if (!isSelected) {
-    const CELL = document.getElementById(cellId);
-    if (CELL.classList.contains('selectable')) {
-      CELL.classList.replace('selectable', 'selected');
-      isSelected = true;
-      document.getElementById('buttonsArea').innerHTML = '';
-      document.getElementById('buttonsArea').innerHTML = `<button class="abort-button" onclick="abortFishing('${cellId}')">ANNULER</button>`;
-    }
-  }
-}
-window.onCellClick = onCellClick;
-
-const abortFishing = (cellId) => {
-  //console.log(cellId);
-  if (isSelected) {
-    const CELL = document.getElementById(cellId);
-    if (CELL.classList.contains('selected')) {
-      CELL.classList.replace('selected', 'selectable');
-      isSelected = false;
-      document.getElementById('buttonsArea').innerHTML = '';
-      document.getElementById('buttonsArea').innerHTML = `
-      <div class="cross-container">
-        <button class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-        <button class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-        <button class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-        <button class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
-      </div>`;
-    }
-  }
-}
-window.abortFishing = abortFishing;
-
-const continueFishing = () => {
-  isSelected = false;
-  document.getElementById('buttonsArea').innerHTML = '';
-  document.getElementById('buttonsArea').innerHTML = `
-  <div class="cross-container">
-    <button class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
-    <button class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
-    <button class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
-    <button class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
-  </div>`;
-  document.getElementById('popup').remove();
-}
-window.continueFishing = continueFishing;
-
-/* ========================================================================= */
-/* =============================== EXECUTION =============================== */
-/* ========================================================================= */
-
-const renderHomeTemplate = () => {
-  document.getElementById('main').innerHTML = `
-  <div id="topArea" class="top-area">
-    <span></span>
-    <span>a fishfull life</span>
-    <span></span>
-  </div>
-    <div id="screenArea" class="screen-area home-screen">
-      <button class="home-screen-button" onclick="onPlayClick()">jouer</button>
-      <button class="home-screen-button" onclick="onCustomizeClick()" disabled>personnaliser</button>
-      <button class="home-screen-button" onclick="onRecordsClick()" disabled>records</button>
-    </div>
-    <div id="buttonsArea" class="buttons-area home-screen">
-    </div>
-  `;
-}
+/* =============================== Home page =============================== */
 
 const onPlayClick = () => {
   document.getElementById('main').innerHTML += `
@@ -598,8 +584,9 @@ const onClosePopupClick = () => {
 }
 window.onClosePopupClick = onClosePopupClick;
 
+/* =============================== Area page =============================== */
 
-
+// Top part -----------------------------------------
 const onHomeClick = () => {
   AREA_FISHES.forEach(fish => {
     clearInterval(fish.intervalId);
@@ -609,32 +596,6 @@ const onHomeClick = () => {
   AREA_FISHES = [];
 }
 window.onHomeClick = onHomeClick;
-
-const renderVivierFishCard = (fish) => {
-  return `
-    <div class="vivier-fish-card">
-      <img src="./medias/images/areas/${currentArea.id}/fishes/${fish.img}.png" />
-      <div>
-        <span>${fish.commonName}</span>
-        <span>(${fish.scientificName})</span>
-        <!--<span>de ${fish.minLength}cm à ${fish.maxLength}cm</span>
-        <span>de ${fish.minMass}g à ${fish.maxMass}g</span>-->
-      </div>
-    </div>
-  `;
-}
-
-const renderAreaVivier = () => {
-  let txt = '';
-  currentArea.fishes.forEach(fish => {
-    txt += renderVivierFishCard(fish);
-  });
-  return `
-    <div class="area-vivier">
-      ${txt}
-    </div>
-  `;
-}
 
 const onVivierClick = () => {
   //console.table(currentArea.fishes);
@@ -650,6 +611,122 @@ const onVivierClick = () => {
 }
 window.onVivierClick = onVivierClick;
 
+// Screen -------------------------------------------
+const movePlayer = (direction) => {
+  if (!isPlayerMoving) {
+    isPlayerMoving = true;
+    const PLAYER = document.getElementById('player');
+    clearPlayerAvailableCells();
+    if (direction == 'left') {
+      PLAYER.style.backgroundImage = `url(${currentCharacter.left})`;
+      if (currentPlayerColumn != 1) {
+        let nextCell = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 1}`;
+        if (document.getElementById(nextCell).classList.contains('walkable')) {
+          currentPlayerColumn -= 1;
+          PLAYER.style.left = `calc(${currentPlayerColumn - 1} * var(--cell-size))`;
+        }
+      }
+    } else if (direction == 'up') {
+      PLAYER.style.backgroundImage = `url(${currentCharacter.back})`;
+      if (currentPlayerLineLetterIndex != 0) {
+        // calcul prochaine cellule
+        let nextCell = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn}`;
+        if (document.getElementById(nextCell).classList.contains('walkable')) {
+          currentPlayerLineLetterIndex -= 1;
+          PLAYER.style.top = `calc(${currentPlayerLineLetterIndex} * var(--cell-size))`;
+        }
+      }
+    } else if (direction == 'right') {
+      PLAYER.style.backgroundImage = `url(${currentCharacter.right})`;
+      if (currentPlayerColumn != 16) {
+        let nextCell = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 1}`;
+        if (document.getElementById(nextCell).classList.contains('walkable')) {    
+          currentPlayerColumn += 1;
+          PLAYER.style.left = `calc(${currentPlayerColumn - 1} * var(--cell-size))`;
+        }
+      }
+    } else if (direction == 'down') {
+      PLAYER.style.backgroundImage = `url(${currentCharacter.front})`;
+      if (currentPlayerLineLetterIndex != 15) {
+        let nextCell = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn}`;
+        if (document.getElementById(nextCell).classList.contains('walkable')) {
+          currentPlayerLineLetterIndex += 1;
+          PLAYER.style.top = `calc(${currentPlayerLineLetterIndex} * var(--cell-size))`;
+        }
+      }
+    }
+    
+    setTimeout(() => {
+      isPlayerMoving = false;
+      setPlayerAvailableCells();
+    }, 200);
+  }
+}
+window.movePlayer = movePlayer;
+
+const onCellClick = (cellId) => {
+  //console.log(cellId);
+  if (!isSelected) {
+    const CELL = document.getElementById(cellId);
+    if (CELL.classList.contains('selectable')) {
+      CELL.classList.replace('selectable', 'selected');
+      isSelected = true;
+      document.getElementById('buttonsArea').innerHTML = '';
+      document.getElementById('buttonsArea').innerHTML = `<button class="abort-button" onclick="abortFishing('${cellId}')">ANNULER</button>`;
+    }
+  }
+}
+window.onCellClick = onCellClick;
+
+const abortFishing = (cellId) => {
+  //console.log(cellId);
+  if (isSelected) {
+    const CELL = document.getElementById(cellId);
+    if (CELL.classList.contains('selected')) {
+      CELL.classList.replace('selected', 'selectable');
+      isSelected = false;
+      document.getElementById('buttonsArea').innerHTML = '';
+      document.getElementById('buttonsArea').innerHTML = `
+      <div class="cross-container">
+        <button class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
+        <button class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
+        <button class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
+        <button class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+      </div>`;
+    }
+  }
+}
+window.abortFishing = abortFishing;
+
+const continueFishing = () => {
+  isSelected = false;
+  document.getElementById('buttonsArea').innerHTML = '';
+  document.getElementById('buttonsArea').innerHTML = `
+  <div class="cross-container">
+    <button class="cross-button left" onclick="movePlayer('left')"><img class="button-caret" src="./medias/images/icons/caret-left-solid.svg"/></button>
+    <button class="cross-button up" onclick="movePlayer('up')"><img class="button-caret" src="./medias/images/icons/caret-up-solid.svg"/></button>
+    <button class="cross-button right" onclick="movePlayer('right')"><img class="button-caret" src="./medias/images/icons/caret-right-solid.svg"/></button>
+    <button class="cross-button down" onclick="movePlayer('down')"><img class="button-caret" src="./medias/images/icons/caret-down-solid.svg"/></button>
+  </div>`;
+  document.getElementById('popup').remove();
+}
+window.continueFishing = continueFishing;
+
+/* ========================================================================= */
+/* =============================== EXECUTION =============================== */
+/* ========================================================================= */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -658,18 +735,7 @@ await requestWakeLock();
 renderHomeTemplate();
 
 
-const defineArea = (area) => {
-  renderBlankTemplate();
-  currentArea = area;
-  currentPlayerLineLetterIndex = currentArea.spawnLine - 1;
-  currentPlayerColumn = currentArea.spawnColumn;
-  renderCurrentArea();
-  setPlayerSpawn();
-  AREA_FISHES = [];
-  let rndCell = getRandomSwimmableCellCoordinates();
-  generateFish(rndCell.letterIndex, rndCell.column);
-  generateFishRandomlyXTimes(randomIntFromInterval(7134, 14798), 1000);
-}
+
 
 let currentArea = AREAS[0];
 
