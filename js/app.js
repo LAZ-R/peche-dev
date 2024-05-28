@@ -36,14 +36,85 @@ const renderHomeTemplate = () => {
     <span></span>
   </div>
     <div id="screenArea" class="screen-area home-screen">
-      <button class="home-screen-button" onclick="onPlayClick()">jouer</button>
-      <button class="home-screen-button" onclick="onCustomizeClick()" disabled>personnaliser</button>
-      <button class="home-screen-button" onclick="onRecordsClick()" disabled>records</button>
+      <div id="homeButtonsArea" class="home-buttons-area">
+        <button id="playButton" class="home-screen-button" onclick="onPlayClick()">jouer</button>
+        <button id="customizeButton" class="home-screen-button" onclick="onCustomizeClick()" disabled>personnaliser</button>
+        <button id="recordsButton" class="home-screen-button" onclick="onRecordsClick()" disabled>records</button>
+      </div>
     </div>
     <div id="buttonsArea" class="buttons-area home-screen">
     </div>
-    <span style="margin-top: auto; margin-bottom: 2svh;">v ${APP_VERSION}</span>
+    <span id="versionNumber" style="margin-top: auto; margin-bottom: 2svh; transition: opacity .5s linear;">v ${APP_VERSION}</span>
   `;
+}
+
+/* const home_music = new Audio('.');
+home_music.preload(); */
+
+const openAppCinematic = (isHome) => {
+  renderHomeTemplate();
+  if (!isDev) {
+    if (isHome) {
+      document.getElementById('topArea').style.opacity = 0;
+      document.getElementById('playButton').style.opacity = 0;
+      document.getElementById('customizeButton').style.opacity = 0;
+      document.getElementById('recordsButton').style.opacity = 0;
+      document.getElementById('screenArea').style.opacity = 0;
+      document.getElementById('buttonsArea').style.opacity = 0;
+      document.getElementById('versionNumber').style.opacity = 0;
+    }
+  }
+  
+  if (isHome) {
+    document.getElementById('main').style.opacity = 1;
+  } else {
+    setTimeout(() => {
+      document.getElementById('main').style.opacity = 1;
+    }, 500);
+  }
+
+  if (!isDev) {
+    if (isHome) {
+      setTimeout(() => {
+        document.getElementById('screenArea').style.opacity = 1;
+        document.getElementById('buttonsArea').style.opacity = 1;
+        setTimeout(() => {
+          document.getElementById('topArea').style.opacity = 1;
+          setTimeout(() => {
+            document.getElementById('versionNumber').style.opacity = 1;
+            setTimeout(() => { 
+              document.getElementById('playButton').style.opacity = 1;
+              setTimeout(() => { 
+                document.getElementById('customizeButton').style.opacity = .5;
+                setTimeout(() => { 
+                  document.getElementById('recordsButton').style.opacity = .5;
+                }, 500);
+              }, 500);
+            }, 500);
+          }, 500);
+        }, 1000);
+      }, 500);
+    } else {
+
+    }
+  }
+}
+
+const fromHomeToArea = (area) => {
+  document.getElementById('main').style.opacity = 0;
+  setTimeout(() => {
+    defineArea(area);
+    setTimeout(() => {
+      document.getElementById('main').style.opacity = 1;
+    }, 500);
+  }, 500);
+}
+
+const fromAreaToHome = (area) => {
+  document.getElementById('main').style.opacity = 0;
+  setTimeout(() => {
+    openAppCinematic();
+  }, 500);
 }
 
 const defineArea = (area) => {
@@ -63,18 +134,19 @@ const defineArea = (area) => {
 
 /* ================================ Top part ================================ */
 const renderVivierFishCard = (fish) => {
+  const imgSrc = fish.img == '' ? `./medias/images/no-picture.png` : `./medias/images/areas/${currentArea.id}/fishes/${fish.img}.png`;
   return `
     <div class="vivier-fish-card">
-      <img src="./medias/images/areas/${currentArea.id}/fishes/${fish.img}.png" />
+      <img src="${imgSrc}" />
       <div>
         <span>${fish.commonName}</span>
         <span>(${fish.scientificName})</span>
-        <!--<span>de ${fish.minLength}cm à ${fish.maxLength}cm</span>
-        <span>de ${fish.minMass}g à ${fish.maxMass}g</span>-->
       </div>
     </div>
   `;
 }
+/* <span>de ${fish.minLength}cm à ${fish.maxLength}cm</span>
+        <span>de ${fish.minMass}g à ${fish.maxMass}g</span> */
 
 const renderAreaVivier = () => {
   let txt = '';
@@ -147,8 +219,8 @@ const setTouchEventCross = () => {
 
   crossLeft.addEventListener('touchend', (event) => {
     event.preventDefault();
-    clearInterval(leftTouchEventIntervalId);
     stillNeedToMove = false;
+    clearInterval(leftTouchEventIntervalId);
     crossLeft.classList.remove('pressed');
   });
 
@@ -174,8 +246,8 @@ const setTouchEventCross = () => {
 
   crossUp.addEventListener('touchend', (event) => {
     event.preventDefault();
-    clearInterval(upTouchEventIntervalId);
     stillNeedToMove = false;
+    clearInterval(upTouchEventIntervalId);
     crossUp.classList.remove('pressed');
   });
 
@@ -201,8 +273,8 @@ const setTouchEventCross = () => {
 
   crossRight.addEventListener('touchend', (event) => {
     event.preventDefault();
-    clearInterval(rightTouchEventIntervalId);
     stillNeedToMove = false;
+    clearInterval(rightTouchEventIntervalId);
     crossRight.classList.remove('pressed');
   });
 
@@ -228,8 +300,8 @@ const setTouchEventCross = () => {
 
   crossDown.addEventListener('touchend', (event) => {
     event.preventDefault();
-    clearInterval(downTouchEventIntervalId);
     stillNeedToMove = false;
+    clearInterval(downTouchEventIntervalId);
     crossDown.classList.remove('pressed');
   });
 }
@@ -258,9 +330,9 @@ const renderBlankTemplate = () => {
 
 const renderCurrentArea = () => {
   document.getElementById('topArea').innerHTML = `
-    <button onclick="onHomeClick()">menu</button>
+    <button id="homeButton" onclick="onHomeClick()">accueil</button>
     <span>${currentArea.id}</span>
-    <button class="vivier-button" onclick="onVivierClick()" disabled>vivier</button>`;
+    <button id="vivierButton" class="vivier-button" onclick="onVivierClick()">vivier</button>`;
   document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/${currentArea.id}/${currentArea.img}.gif')`;
   currentArea.walkableCells.forEach(cell => {
     document.getElementById(cell).classList.add('walkable');
@@ -393,9 +465,9 @@ const moveFish = (fish, direction) => {
 
   const checkSelected = (nextCell, FISH) => {
     if (document.getElementById(nextCell).classList.contains('selected')) {
+      document.getElementById(nextCell).classList.replace('selected', 'touched');
       clearInterval(fish.intervalId);
       FISH.style.opacity = 1;
-      document.getElementById(nextCell).classList.replace('selected', 'touched');
 
       setTimeout(() => {
         launchBattle(FISH);
@@ -579,6 +651,7 @@ const getFishById = (id) => {
 
 const getIndividualFishCard = (individualFish) => {
   const baseFish = getFishById(individualFish.id);
+  const imgSrc = baseFish.img == '' ? `./medias/images/no-picture.png` : `./medias/images/areas/${currentArea.id}/fishes/${baseFish.img}.png`;
 
   return `
     <div class="fish-card">
@@ -586,7 +659,7 @@ const getIndividualFishCard = (individualFish) => {
         <span>${baseFish.commonName}</span>
         <span>(${baseFish.scientificName})</span>
       </div>
-      <img class="fish-card-img" style="" src="./medias/images/areas/${currentArea.id}/fishes/${baseFish.img}.png" />
+      <img class="fish-card-img" style="" src="${imgSrc}" />
       <div class="fish-card-bloc">
         <span>Taille : ${individualFish.length}cm</span>
         <span>Poids : ${individualFish.mass}g</span>
@@ -598,6 +671,8 @@ const getIndividualFishCard = (individualFish) => {
 // Battle -------------------------
 
 const launchBattle = (domFish) => {
+  document.getElementById('vivierButton').setAttribute('disabled', true);
+
   isSelected = false;
   clearPlayerAvailableCells();
   domFish.remove();
@@ -616,6 +691,12 @@ const launchBattle = (domFish) => {
     `On tire, encore un peu !`,
     `La bataille est lancée !`,
   ];
+
+  let previousPopup = document.getElementById('popup');
+  if (previousPopup != null) {
+    previousPopup.remove();
+  }
+
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup">
       <span>${battleMessages[randomIntFromInterval(0, battleMessages.length - 1)]}</span>
@@ -700,9 +781,9 @@ const onPlayClick = () => {
             <img src="./medias/images/areas/france/france.gif" />
             <span>france</span>
           </button>
-          <button class="area-button" onclick="onAreaButtonClick()" disabled>
-            <div class="no-img"></div>
-            <span>???</span>
+          <button class="area-button" onclick="onAreaButtonClick(1)" disabled>
+          <img src="./medias/images/areas/amazonie/amazonie.gif" />
+            <span>amazonie</span>
           </button>
         </div>
 
@@ -731,7 +812,8 @@ const onPlayClick = () => {
 window.onPlayClick = onPlayClick;
 
 const onAreaButtonClick = (areaIndex) => {
-  defineArea(AREAS[areaIndex]);
+  currentArea = AREAS[areaIndex];
+  fromHomeToArea(AREAS[areaIndex]);
 }
 window.onAreaButtonClick = onAreaButtonClick;
 
@@ -745,8 +827,13 @@ const onCustomizeClick = () => {
 }
 window.onCustomizeClick = onCustomizeClick;
 
-const onClosePopupClick = () => {
+const onClosePopupClick = (popupName) => {
   document.getElementById('popup').remove();
+
+  if (popupName == 'home' || popupName == 'vivier') {
+    document.getElementById('vivierButton').removeAttribute('disabled');
+    document.getElementById('homeButton').removeAttribute('disabled');
+  }
 }
 window.onClosePopupClick = onClosePopupClick;
 
@@ -754,27 +841,58 @@ window.onClosePopupClick = onClosePopupClick;
 
 // Top part -----------------------------------------
 const onHomeClick = () => {
+
+  let previousPopup = document.getElementById('popup');
+  if (previousPopup != null) {
+    previousPopup.remove();
+  }
+
+  document.getElementById('vivierButton').setAttribute('disabled', true);
+  document.getElementById('homeButton').setAttribute('disabled', true);
+
+  document.getElementById('main').innerHTML += `
+    <div id="popup" class="popup goto-home">
+      <div class="popup-top">
+        <span>Retour à l'accueil</span>
+        <button class="close-popup-button" onclick="onClosePopupClick('home')">X</button>
+      </div>
+      <div>
+        <span>Voulez-vous vraiment retourner à l'accueil ?</span>
+        <div>
+          <button onclick="onClosePopupClick('home')">non</button>
+          <button onclick="leaveArea()">oui</button>
+        </div>
+      </div>
+    </div>
+  `;
+  setTouchEventCross();
+}
+window.onHomeClick = onHomeClick;
+
+const leaveArea = () => {
   isSelected = false;
   AREA_FISHES.forEach(fish => {
     clearInterval(fish.intervalId);
   });
   clearInterval(fishGeneration);
-  renderHomeTemplate();
   AREA_FISHES = [];
+  fromAreaToHome();
 }
-window.onHomeClick = onHomeClick;
+window.leaveArea = leaveArea;
 
 const onVivierClick = () => {
   //console.table(currentArea.fishes);
+  document.getElementById('vivierButton').setAttribute('disabled', true);
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup vivier">
       <div class="popup-top">
         <span>Vivier</span>
-        <button class="close-popup-button" onclick="onClosePopupClick()">X</button>
+        <button class="close-popup-button" onclick="onClosePopupClick('vivier')">X</button>
       </div>
       ${renderAreaVivier()}
     </div>
   `;
+  setTouchEventCross();
 }
 window.onVivierClick = onVivierClick;
 
@@ -883,6 +1001,7 @@ const continueFishing = () => {
   </div>`;
   setTouchEventCross();
   document.getElementById('popup').remove();
+  document.getElementById('vivierButton').removeAttribute('disabled');
 }
 window.continueFishing = continueFishing;
 
@@ -890,26 +1009,9 @@ window.continueFishing = continueFishing;
 /* =============================== EXECUTION =============================== */
 /* ========================================================================= */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 await requestWakeLock();
 //
-renderHomeTemplate();
-
-
-
+let isDev = false;
 
 let currentArea = AREAS[0];
 let currentRod = 'canne2';
@@ -933,13 +1035,4 @@ const fishImages = {
   right: `./medias/images/characters/fish-right.png`,
 };
 
-
-
-
-
-
-
-
-
-
-
+openAppCinematic(true);
