@@ -380,7 +380,7 @@ const setPlayerAvailableCells = () => {
   setPlayerAvailableCell(document.getElementById(rightCellId));
   setPlayerAvailableCell(document.getElementById(downCellId));
 
-  if (currentRod != 'canne1') {
+  if (currentRod == 'canne2' || currentRod == 'canne3') {
     // Canne à pêche 2
   
     let left2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}`;
@@ -400,6 +400,44 @@ const setPlayerAvailableCells = () => {
     setPlayerAvailableCell(document.getElementById(rightDownCellId));
     setPlayerAvailableCell(document.getElementById(down2CellId));
     setPlayerAvailableCell(document.getElementById(downLeftCellId));
+
+    if (currentRod == 'canne3') {
+      // Canne à pêche 3
+    
+      let left3CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 3}`;
+      let left2Up1CellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 2}`;
+      //let left2Up2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn - 2}`;
+      let left1Up2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn - 1}`;
+      let up3CellId = `${letters[currentPlayerLineLetterIndex - 3]}${currentPlayerColumn}`;
+      let up2Right1CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn + 1}`;
+      //let up2Right2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn + 2}`;
+      let up1Right2CellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 2}`;
+      let right3CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 3}`;
+      let right2Down1CellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 2}`;
+      //let right2Down2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn + 2}`;
+      let right1Down2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn + 1}`;
+      let down3CellId = `${letters[currentPlayerLineLetterIndex + 3]}${currentPlayerColumn}`;
+      let down2Left1CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn - 1}`;
+     // let down2Left2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn - 2}`;
+      let down1Left2CellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 2}`;
+  
+      setPlayerAvailableCell(document.getElementById(left3CellId));
+      setPlayerAvailableCell(document.getElementById(left2Up1CellId));
+      //setPlayerAvailableCell(document.getElementById(left2Up2CellId));
+      setPlayerAvailableCell(document.getElementById(left1Up2CellId));
+      setPlayerAvailableCell(document.getElementById(up3CellId));
+      setPlayerAvailableCell(document.getElementById(up2Right1CellId));
+      //setPlayerAvailableCell(document.getElementById(up2Right2CellId));
+      setPlayerAvailableCell(document.getElementById(up1Right2CellId));
+      setPlayerAvailableCell(document.getElementById(right3CellId));
+      setPlayerAvailableCell(document.getElementById(right2Down1CellId));
+      //setPlayerAvailableCell(document.getElementById(right2Down2CellId));
+      setPlayerAvailableCell(document.getElementById(right1Down2CellId));
+      setPlayerAvailableCell(document.getElementById(down3CellId));
+      setPlayerAvailableCell(document.getElementById(down2Left1CellId));
+      //setPlayerAvailableCell(document.getElementById(down2Left2CellId));
+      setPlayerAvailableCell(document.getElementById(down1Left2CellId));
+    }
   }
 }
 
@@ -432,7 +470,7 @@ const clearPlayerAvailableCells = () => {
   clearPlayerAvailableCell(document.getElementById(rightCellId));
   clearPlayerAvailableCell(document.getElementById(downCellId));
 
-  if (currentRod != 'canne1') {
+  if (currentRod == 'canne2' || currentRod == 'canne3') {
     // Canne à pêche 2
   
     let left2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}`;
@@ -452,6 +490,44 @@ const clearPlayerAvailableCells = () => {
     clearPlayerAvailableCell(document.getElementById(rightDownCellId));
     clearPlayerAvailableCell(document.getElementById(down2CellId));
     clearPlayerAvailableCell(document.getElementById(downLeftCellId));
+
+    if (currentRod == 'canne3') {
+      // Canne à pêche 3
+    
+      let left3CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 3}`;
+      let left2Up1CellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 2}`;
+      //let left2Up2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn - 2}`;
+      let left1Up2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn - 1}`;
+      let up3CellId = `${letters[currentPlayerLineLetterIndex - 3]}${currentPlayerColumn}`;
+      let up2Right1CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn + 1}`;
+      //let up2Right2CellId = `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn + 2}`;
+      let up1Right2CellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 2}`;
+      let right3CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 3}`;
+      let right2Down1CellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 2}`;
+      //let right2Down2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn + 2}`;
+      let right1Down2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn + 1}`;
+      let down3CellId = `${letters[currentPlayerLineLetterIndex + 3]}${currentPlayerColumn}`;
+      let down2Left1CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn - 1}`;
+      //let down2Left2CellId = `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn - 2}`;
+      let down1Left2CellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 2}`;
+  
+      clearPlayerAvailableCell(document.getElementById(left3CellId));
+      clearPlayerAvailableCell(document.getElementById(left2Up1CellId));
+      //clearPlayerAvailableCell(document.getElementById(left2Up2CellId));
+      clearPlayerAvailableCell(document.getElementById(left1Up2CellId));
+      clearPlayerAvailableCell(document.getElementById(up3CellId));
+      clearPlayerAvailableCell(document.getElementById(up2Right1CellId));
+      //clearPlayerAvailableCell(document.getElementById(up2Right2CellId));
+      clearPlayerAvailableCell(document.getElementById(up1Right2CellId));
+      clearPlayerAvailableCell(document.getElementById(right3CellId));
+      clearPlayerAvailableCell(document.getElementById(right2Down1CellId));
+      //clearPlayerAvailableCell(document.getElementById(right2Down2CellId));
+      clearPlayerAvailableCell(document.getElementById(right1Down2CellId));
+      clearPlayerAvailableCell(document.getElementById(down3CellId));
+      clearPlayerAvailableCell(document.getElementById(down2Left1CellId));
+      //clearPlayerAvailableCell(document.getElementById(down2Left2CellId));
+      clearPlayerAvailableCell(document.getElementById(down1Left2CellId));
+    }
   }
 }
 

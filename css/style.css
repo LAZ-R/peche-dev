@@ -497,7 +497,7 @@ main {
           gap: var(--cell-size);
 
           & > img {
-            aspect-ratio: 16/9;
+            aspect-ratio: 16/8;
             height: 40px;
             /* border: 1px solid red; */
           }
@@ -609,7 +609,7 @@ main {
       .fish-card-img {
         height: 64px;
         /* border: 1px solid red; */
-        aspect-ratio: 16/9;
+        aspect-ratio: 16/8;
       }
     }
   }

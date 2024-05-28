@@ -1,5 +1,5 @@
 export const APP_NAME = 'Pêche (dev)';
-export const APP_VERSION = '0.0.14'; // v 0.0.14 - debut optim images
+export const APP_VERSION = '0.0.15'; // v 0.0.15 - fix 16/8 + canne 3
 export const APP_SHORT_NAME = `pechedev001`;
 
 /*
@@ -16,8 +16,6 @@ export const APP_SHORT_NAME = `pechedev001`;
 
   Ajout sons
   Ajout musique
-
-  Ajout canne 3
 
   Ajout personalisation
 
