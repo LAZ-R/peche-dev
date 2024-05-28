@@ -118,7 +118,6 @@ main {
     align-items: center;
     min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
     min-height: var(--screen-size); height: var(--screen-size); max-height: var(--screen-size);
-    /* background-image: url('../medias/images/areas/test-100.gif'); */
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -126,7 +125,7 @@ main {
 
     &.home-screen {
       /* padding: var(--cell-size); */
-      background-image: url('../medias/images/areas/home-100.gif');
+      background-image: url('../medias/images/areas/home-100.webp');
       gap: var(--cell-size);
 
       .home-buttons-area {
@@ -212,6 +211,7 @@ main {
           border: 3px solid #f71aff;
           background-color: #e953fd4b;
           transform: scale(2);
+          z-index: 101;
           /* border: 2px solid #00ff00;
           background-color: #00ff004b; */
         }

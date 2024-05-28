@@ -331,7 +331,7 @@ const renderCurrentArea = () => {
     <button id="homeButton" onclick="onHomeClick()">accueil</button>
     <span>${currentArea.id}</span>
     <button id="vivierButton" class="vivier-button" onclick="onVivierClick()">vivier</button>`;
-  document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/${currentArea.id}/${currentArea.img}.gif')`;
+  document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/${currentArea.id}/${currentArea.img}.webp')`;
   currentArea.walkableCells.forEach(cell => {
     document.getElementById(cell).classList.add('walkable');
   });
@@ -344,16 +344,16 @@ const renderCurrentArea = () => {
 
 const getCurrentPlayerSprites = () => {
   return {
-    front: `./medias/images/characters/${currentCharacterId}-front.png`,
-    frontRightFoot: `./medias/images/characters/${currentCharacterId}-front-rf.png`,
-    frontLeftFoot: `./medias/images/characters/${currentCharacterId}-front-lf.png`,
-    back: `./medias/images/characters/${currentCharacterId}-back.png`,
-    backRightFoot: `./medias/images/characters/${currentCharacterId}-back-rf.png`,
-    backLeftFoot: `./medias/images/characters/${currentCharacterId}-back-lf.png`,
-    left: `./medias/images/characters/${currentCharacterId}-left.png`,
-    leftMoving: `./medias/images/characters/${currentCharacterId}-left-moving.png`,
-    right: `./medias/images/characters/${currentCharacterId}-right.png`,
-    rightMoving: `./medias/images/characters/${currentCharacterId}-right-moving.png`,
+    front: `./medias/images/characters/${currentCharacterId}-front.webp`,
+    frontRightFoot: `./medias/images/characters/${currentCharacterId}-front-rf.webp`,
+    frontLeftFoot: `./medias/images/characters/${currentCharacterId}-front-lf.webp`,
+    back: `./medias/images/characters/${currentCharacterId}-back.webp`,
+    backRightFoot: `./medias/images/characters/${currentCharacterId}-back-rf.webp`,
+    backLeftFoot: `./medias/images/characters/${currentCharacterId}-back-lf.webp`,
+    left: `./medias/images/characters/${currentCharacterId}-left.webp`,
+    leftMoving: `./medias/images/characters/${currentCharacterId}-left-moving.webp`,
+    right: `./medias/images/characters/${currentCharacterId}-right.webp`,
+    rightMoving: `./medias/images/characters/${currentCharacterId}-right-moving.webp`,
   }
 }
 
@@ -777,11 +777,11 @@ const onPlayClick = () => {
 
         <div class="area-line">
           <button class="area-button" onclick="onAreaButtonClick(0)">
-            <img src="./medias/images/areas/france/france.gif" />
+            <img src="./medias/images/areas/france/france-fix.webp" />
             <span>france</span>
           </button>
           <button class="area-button" onclick="onAreaButtonClick(1)" disabled>
-          <img src="./medias/images/areas/amazonie/amazonie.gif" />
+          <img src="./medias/images/areas/amazonie/amazonie-fix.webp" />
             <span>amazonie</span>
           </button>
         </div>
@@ -1053,10 +1053,10 @@ let currentCharacter = getCurrentPlayerSprites();
 let fishes = 0;
 let AREA_FISHES = [];
 const fishImages = {
-  front: `./medias/images/characters/fish-front.png`,
-  back: `./medias/images/characters/fish-back.png`,
-  left: `./medias/images/characters/fish-left.png`,
-  right: `./medias/images/characters/fish-right.png`,
+  front: `./medias/images/characters/fish-front.webp`,
+  back: `./medias/images/characters/fish-back.webp`,
+  left: `./medias/images/characters/fish-left.webp`,
+  right: `./medias/images/characters/fish-right.webp`,
 };
 
 openAppCinematic(true);
