@@ -17,7 +17,6 @@ const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
 
 const minSpawnTime = 7134;
 const maxSpawnTime = 14798;
-const spawnRepetitions = 1000;
 
 const minFishMovement = 16;
 const maxFishMovement = 64;
@@ -80,22 +79,21 @@ const openAppCinematic = (isHome) => {
         document.getElementById('buttonsArea').style.opacity = 1;
         setTimeout(() => {
           document.getElementById('topArea').style.opacity = 1;
-          setTimeout(() => {
-            document.getElementById('versionNumber').style.opacity = 1;
+          setTimeout(() => { 
+            document.getElementById('playButton').style.opacity = 1;
             setTimeout(() => { 
-              document.getElementById('playButton').style.opacity = 1;
+              document.getElementById('customizeButton').style.opacity = .5;
               setTimeout(() => { 
-                document.getElementById('customizeButton').style.opacity = .5;
-                setTimeout(() => { 
-                  document.getElementById('recordsButton').style.opacity = .5;
+                document.getElementById('recordsButton').style.opacity = .5;
+                setTimeout(() => {
+                  document.getElementById('versionNumber').style.opacity = 1;
+                  // Futur bouton paramètres
                 }, 500);
               }, 500);
             }, 500);
           }, 500);
         }, 1000);
       }, 500);
-    } else {
-
     }
   }
 }
@@ -127,7 +125,7 @@ const defineArea = (area) => {
   AREA_FISHES = [];
   let rndCell = getRandomSwimmableCellCoordinates();
   generateFish(rndCell.letterIndex, rndCell.column);
-  generateFishRandomlyXTimes(randomIntFromInterval(minSpawnTime, maxSpawnTime), spawnRepetitions);
+  generateFishRandomlyXTimes();
 }
 
 /* ############################### Area page ############################### */
@@ -214,7 +212,7 @@ const setTouchEventCross = () => {
           movePlayer('left');
         }, 100);
       }
-    }, 200);
+    }, 50);
   });
 
   crossLeft.addEventListener('touchend', (event) => {
@@ -241,7 +239,7 @@ const setTouchEventCross = () => {
           movePlayer('up');
         }, 100);
       }
-    }, 200);
+    }, 50);
   });
 
   crossUp.addEventListener('touchend', (event) => {
@@ -268,7 +266,7 @@ const setTouchEventCross = () => {
           movePlayer('right');
         }, 100);
       }
-    }, 200);
+    }, 50);
   });
 
   crossRight.addEventListener('touchend', (event) => {
@@ -295,7 +293,7 @@ const setTouchEventCross = () => {
           movePlayer('down');
         }, 100);
       }
-    }, 200);
+    }, 50);
   });
 
   crossDown.addEventListener('touchend', (event) => {
@@ -347,9 +345,15 @@ const renderCurrentArea = () => {
 const getCurrentPlayerSprites = () => {
   return {
     front: `./medias/images/characters/${currentCharacterId}-front.png`,
+    frontRightFoot: `./medias/images/characters/${currentCharacterId}-front-rf.png`,
+    frontLeftFoot: `./medias/images/characters/${currentCharacterId}-front-lf.png`,
     back: `./medias/images/characters/${currentCharacterId}-back.png`,
+    backRightFoot: `./medias/images/characters/${currentCharacterId}-back-rf.png`,
+    backLeftFoot: `./medias/images/characters/${currentCharacterId}-back-lf.png`,
     left: `./medias/images/characters/${currentCharacterId}-left.png`,
+    leftMoving: `./medias/images/characters/${currentCharacterId}-left-moving.png`,
     right: `./medias/images/characters/${currentCharacterId}-right.png`,
+    rightMoving: `./medias/images/characters/${currentCharacterId}-right-moving.png`,
   }
 }
 
@@ -468,6 +472,7 @@ const moveFish = (fish, direction) => {
       document.getElementById(nextCell).classList.replace('selected', 'touched');
       clearInterval(fish.intervalId);
       FISH.style.opacity = 1;
+      document.getElementById('buttonsArea').innerHTML = ``;
 
       setTimeout(() => {
         launchBattle(FISH);
@@ -593,17 +598,11 @@ const generateFish = (letterIndex, column) => {
   moveFishRandomlyXTimes(AREA_FISHES[AREA_FISHES.length - 1], 1000, randomIntFromInterval(minFishMovement, maxFishMovement));
 }
 
-const generateFishRandomlyXTimes = (interval, repetitions) => {
-  let compteur = 0;
+const generateFishRandomlyXTimes = () => {
   fishGeneration = setInterval(() => {
-      if (compteur >= repetitions) {
-          clearInterval(fishGeneration);
-      } else {
-        let rndCell = getRandomSwimmableCellCoordinates();
-        generateFish(rndCell.letterIndex, rndCell.column);
-        compteur++;
-      }
-  }, interval);
+    let rndCell = getRandomSwimmableCellCoordinates();
+    generateFish(rndCell.letterIndex, rndCell.column);
+  }, randomIntFromInterval(minSpawnTime, maxSpawnTime));
 }
 
 /* =============================== Battle =============================== */
@@ -896,6 +895,7 @@ const onVivierClick = () => {
 }
 window.onVivierClick = onVivierClick;
 
+let isOnRightFoot = true;
 // Screen -------------------------------------------
 const movePlayer = (direction) => {
   if (!isPlayerMoving) {
@@ -903,7 +903,10 @@ const movePlayer = (direction) => {
     const PLAYER = document.getElementById('player');
     clearPlayerAvailableCells();
     if (direction == 'left') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.left})`;
+      PLAYER.style.backgroundImage = `url(${currentCharacter.leftMoving})`;
+      setTimeout(() => {
+        PLAYER.style.backgroundImage = `url(${currentCharacter.left})`;
+      }, 200);
       if (currentPlayerColumn != 1) {
         let nextCell = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 1}`;
         if (document.getElementById(nextCell).classList.contains('walkable')) {
@@ -912,7 +915,16 @@ const movePlayer = (direction) => {
         }
       }
     } else if (direction == 'up') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.back})`;
+      if (isOnRightFoot) {
+        isOnRightFoot = false;
+        PLAYER.style.backgroundImage = `url(${currentCharacter.backLeftFoot})`;
+      } else {
+        isOnRightFoot = true;
+        PLAYER.style.backgroundImage = `url(${currentCharacter.backRightFoot})`;
+      }
+      setTimeout(() => {
+        PLAYER.style.backgroundImage = `url(${currentCharacter.back})`;
+      }, 200);
       if (currentPlayerLineLetterIndex != 0) {
         // calcul prochaine cellule
         let nextCell = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn}`;
@@ -922,7 +934,10 @@ const movePlayer = (direction) => {
         }
       }
     } else if (direction == 'right') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.right})`;
+      PLAYER.style.backgroundImage = `url(${currentCharacter.rightMoving})`;
+      setTimeout(() => {
+        PLAYER.style.backgroundImage = `url(${currentCharacter.right})`;
+      }, 200);
       if (currentPlayerColumn != 16) {
         let nextCell = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 1}`;
         if (document.getElementById(nextCell).classList.contains('walkable')) {    
@@ -931,7 +946,16 @@ const movePlayer = (direction) => {
         }
       }
     } else if (direction == 'down') {
-      PLAYER.style.backgroundImage = `url(${currentCharacter.front})`;
+      if (isOnRightFoot) {
+        isOnRightFoot = false;
+        PLAYER.style.backgroundImage = `url(${currentCharacter.frontLeftFoot})`;
+      } else {
+        isOnRightFoot = true;
+        PLAYER.style.backgroundImage = `url(${currentCharacter.frontRightFoot})`;
+      }
+      setTimeout(() => {
+        PLAYER.style.backgroundImage = `url(${currentCharacter.front})`;
+      }, 200);
       if (currentPlayerLineLetterIndex != 15) {
         let nextCell = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn}`;
         if (document.getElementById(nextCell).classList.contains('walkable')) {
