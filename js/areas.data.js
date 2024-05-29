@@ -61,7 +61,7 @@ export const AREAS = [
       /* https://www.peche69.fr/Liste_fiche_poisson/4529-tout-savoir-sur-les-poissons-d-eau-douce.htm?ip=2&op=fp.FIP_NOM+asc&cp=2be5d7915194da7c5fb2&mp=10 */
       {
         id: 'rutilusRutilus',
-        img: '', // à faire ------------
+        img: 'rutilusRutilus',
         commonName: 'Gardon',
         scientificName: 'Rutilus rutilus',
         minLength: 22,
@@ -71,7 +71,7 @@ export const AREAS = [
       },
       {
         id: 'gasterosteusAculeatus',
-        img: '', // à faire ------------
+        img: 'gasterosteusAculeatus',
         commonName: 'Épinoche',
         scientificName: 'Gasterosteus aculeatus',
         minLength: 4,
@@ -111,7 +111,7 @@ export const AREAS = [
       },
       {
         id: 'gobioGobio',
-        img: '', // à faire ------------
+        img: 'gobioGobio',
         commonName: 'Goujon',
         scientificName: 'Gobio gobio',
         minLength: 8,
@@ -172,76 +172,59 @@ export const AREAS = [
       'O3', 'O4', 'O5', 'O12', 'O13'
     ],
     fishes: [
-      /* https://www.peche69.fr/Liste_fiche_poisson/4529-tout-savoir-sur-les-poissons-d-eau-douce.htm?ip=2&op=fp.FIP_NOM+asc&cp=2be5d7915194da7c5fb2&mp=10 */
       {
-        id: 'rutilusRutilus',
+        id: 'arapaimaGigas',
         img: '', // à faire ------------
-        commonName: 'Gardon',
-        scientificName: 'Rutilus rutilus',
-        minLength: 22,
-        maxLength: 32,
-        minMass: 250,
-        maxMass: 600,
+        commonName: 'Arapaïma',
+        scientificName: 'Arapaima gigas',
+        minLength: 147,
+        maxLength: 451,
+        minMass: 78569,
+        maxMass: 253685,
       },
+      
+      // PACUS ---------------------------------------------------------
       {
-        id: 'gasterosteusAculeatus',
+        id: 'piaractusBrachypomus',
         img: '', // à faire ------------
-        commonName: 'Épinoche',
-        scientificName: 'Gasterosteus aculeatus',
-        minLength: 4,
-        maxLength: 9,
-        minMass: 1,
-        maxMass: 7,
+        commonName: 'Pacu',
+        scientificName: 'Piaractus brachypomus',
+        minLength: 54,
+        maxLength: 89,
+        minMass: 11000,
+        maxMass: 25000,
       },
       {
-        id: 'salmoTrutta',
-        img: 'salmoTrutta',
-        commonName: 'Truite commune',
-        scientificName: 'Salmo trutta',
-        minLength: 18,
-        maxLength: 49,
-        minMass: 100,
-        maxMass: 3000,
-      },
-      {
-        id: 'tincaTinca',
-        img: 'tincaTinca',
-        commonName: 'Tanche',
-        scientificName: 'Tinca tinca',
-        minLength: 27,
-        maxLength: 45,
-        minMass: 425,
-        maxMass: 1122,
-      },
-      {
-        id: 'percaFluviatilis',
-        img: 'percaFluviatilis',
-        commonName: 'Perche',
-        scientificName: 'Perca fluviatilis',
-        minLength: 15,
-        maxLength: 50,
-        minMass: 200,
-        maxMass: 1982,
-      },
-      {
-        id: 'gobioGobio',
+        id: 'colossomaMacropomum',
         img: '', // à faire ------------
-        commonName: 'Goujon',
-        scientificName: 'Gobio gobio',
-        minLength: 8,
-        maxLength: 21,
-        minMass: 20,
-        maxMass: 40,
+        commonName: 'Tambaqui',
+        scientificName: 'Colossoma macropomum',
+        minLength: 63,
+        maxLength: 109,
+        minMass: 19142,
+        maxMass: 41253,
+      },
+
+      // PIRANHAS ---------------------------------------------------------
+      {
+        id: 'pygocentrusNattereri',
+        img: '', // à faire ------------
+        commonName: 'Piranha à ventre rouge',
+        scientificName: 'Pygocentrus nattereri',
+        minLength: 21,
+        maxLength: 46,
+        minMass: 1873,
+        maxMass: 3818,
       },
       {
-        id: 'lotaLota',
-        img: 'lotaLota',
-        commonName: 'Lote',
-        scientificName: 'Lota lota',
-        minLength: 35,
-        maxLength: 45,
-        minMass: 350,
-        maxMass: 600,
+        id: 'pygocentrusPiraya',
+        img: '', // à faire ------------
+        commonName: 'Piranha à queue noire',
+        scientificName: 'Pygocentrus piraya',
+        minLength: 24,
+        maxLength: 52,
+        minMass: 2154,
+        maxMass: 4686,
       },
     ],
   },
