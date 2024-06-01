@@ -1,5 +1,5 @@
 export const APP_NAME = 'Pêche (dev)';
-export const APP_VERSION = '0.0.18'; // v 0.0.18 - Ajout storage + mise en place Records + mise en place settings
+export const APP_VERSION = '0.0.19'; // v 0.0.19 - uncatched = B&W
 export const APP_SHORT_NAME = `pechedev0018`;
 
 /*

@@ -662,6 +662,7 @@ main {
 
           &.uncatched {
             opacity: .5;
+            filter: grayscale(1);
           }
 
           & > img {
