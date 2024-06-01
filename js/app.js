@@ -1,6 +1,7 @@
 import { APP_VERSION } from "../properties.js";
 import { AREAS } from "./areas.data.js";
 import { CHARACTERS } from "./characters.data.js";
+import { getUser, getUserSetting, setStorage, setUser } from "./storage.js";
 import { requestWakeLock } from "./wakelock.js";
 
 // UTILS
@@ -30,15 +31,15 @@ const maxFishMovement = 64;
 const renderHomeTemplate = () => {
   document.getElementById('main').innerHTML = `
   <div id="topArea" class="top-area">
-    <span></span>
+    <span style="width: 90px;"></span>
     <span>a fishfull life</span>
-    <span></span>
+    <button id="settingsButton" style="width: 90px;" onclick="onSettingsClick()"><img src="./medias/images/icons/gear-solid.svg" /></button>
   </div>
     <div id="screenArea" class="screen-area home-screen">
       <div id="homeButtonsArea" class="home-buttons-area">
         <button id="playButton" class="home-screen-button" onclick="onPlayClick()">jouer</button>
+        <button id="recordsButton" class="home-screen-button" onclick="onRecordsClick()">records</button>
         <button id="cabinButton" onclick="onCabinClick()">cabane</button>
-        <button id="recordsButton" class="home-screen-button" onclick="onRecordsClick()" disabled>records</button>
       </div>
     </div>
     <div id="buttonsArea" class="buttons-area home-screen">
@@ -147,14 +148,30 @@ const defineArea = (area) => {
 
 /* ================================ Top part ================================ */
 const renderVivierFishCard = (fish) => {
+  let user = getUser();
+  let hasBeenCatch = false;
+  let bestNotation = 0;
+
+  user.catches.forEach(catchedFish => {
+    console.log(catchedFish.fishId);
+    if (fish.id == catchedFish.fishId) {
+      console.log('has been catched');
+      hasBeenCatch = true;
+      if (catchedFish.notation > bestNotation) {
+        bestNotation = catchedFish.notation;
+      }
+    }
+  });
+
   const imgSrc = fish.img == '' ? `./medias/images/no-picture.png` : `./medias/images/areas/${currentArea.id}/fishes/${fish.img}.png`;
   return `
-    <div class="vivier-fish-card">
+    <div class="vivier-fish-card ${hasBeenCatch ? '' : 'uncatched'}">
       <img src="${imgSrc}" />
       <div>
         <span>${fish.commonName}</span>
         <span>(${fish.scientificName})</span>
-      </div>
+        </div>
+        ${hasBeenCatch ?  `<div class="notation-area small">${getNotationDiv(bestNotation)}</div>` : ''}
     </div>
   `;
 }
@@ -400,7 +417,7 @@ const setPlayerAvailableCells = () => {
   setPlayerAvailableCell(document.getElementById(rightCellId));
   setPlayerAvailableCell(document.getElementById(downCellId));
 
-  if (currentRod == 'canne2' || currentRod == 'canne3') {
+  if (currentRod == 2 || currentRod == 3) {
     // Canne à pêche 2
   
     let left2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}`;
@@ -421,7 +438,7 @@ const setPlayerAvailableCells = () => {
     setPlayerAvailableCell(document.getElementById(down2CellId));
     setPlayerAvailableCell(document.getElementById(downLeftCellId));
 
-    if (currentRod == 'canne3') {
+    if (currentRod == 3) {
       // Canne à pêche 3
     
       let left3CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 3}`;
@@ -490,7 +507,7 @@ const clearPlayerAvailableCells = () => {
   clearPlayerAvailableCell(document.getElementById(rightCellId));
   clearPlayerAvailableCell(document.getElementById(downCellId));
 
-  if (currentRod == 'canne2' || currentRod == 'canne3') {
+  if (currentRod == 2 || currentRod == 3) {
     // Canne à pêche 2
   
     let left2CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}`;
@@ -511,7 +528,7 @@ const clearPlayerAvailableCells = () => {
     clearPlayerAvailableCell(document.getElementById(down2CellId));
     clearPlayerAvailableCell(document.getElementById(downLeftCellId));
 
-    if (currentRod == 'canne3') {
+    if (currentRod == 3) {
       // Canne à pêche 3
     
       let left3CellId = `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 3}`;
@@ -730,13 +747,19 @@ const getRandomIndividual = (fishType) => {
   );
   // ----------------
 
-  let individualSaturation = randomIntFromInterval(50, 100);
+  let lengthPercentage = ((induvidualLength - fishType.minLength) / (fishType.maxLength - fishType.minLength)) * 100;
+  let massPercentage = ((induvidualMass - fishType.minMass) / (fishType.maxMass - fishType.minMass)) * 100;
+
+  let lengthNotation = lengthPercentage < 25 ? 0 : lengthPercentage <= 50 ? 1 : lengthPercentage <= 75 ? 2 : 3;
+  let massNotation = massPercentage < 25 ? 0 : massPercentage <= 50 ? 1 : massPercentage <= 75 ? 2 : 3;
+
+  let individualNotation = Math.ceil((lengthNotation + massNotation) / 2);
 
   return {
     id: fishType.id,
     length: induvidualLength,
     mass: induvidualMass,
-    saturation: individualSaturation,
+    notation: individualNotation,
   }
 }
 
@@ -758,8 +781,17 @@ const getIndividualFishCard = (individualFish) => {
       <div class="fish-card-bloc">
         <span>Taille : ${individualFish.length}cm</span>
         <span>Poids : ${individualFish.mass}g</span>
+        <div class="notation-area">${getNotationDiv(individualFish.notation)}</div>
       </div>
     </div>
+  `;
+}
+
+const getNotationDiv = (notation) => {
+  return `
+    <img src="${notation > 0 ? './medias/images/icons/star-solid.svg' : './medias/images/icons/star-regular.svg'}" class="${notation > 0 ? 'turned-on' : 'turned-off'}" />
+    <img src="${notation > 1 ? './medias/images/icons/star-solid.svg' : './medias/images/icons/star-regular.svg'}" class="${notation > 1 ? 'turned-on' : 'turned-off'}" />
+    <img src="${notation > 2 ? './medias/images/icons/star-solid.svg' : './medias/images/icons/star-regular.svg'}" class="${notation > 2 ? 'turned-on' : 'turned-off'}" />
   `;
 }
 
@@ -822,6 +854,20 @@ const launchBattle = (domFish) => {
       `;
     } else { // Bataille gagnée
       // récupération message aléatoire
+      const INDIVIDUAL = getRandomIndividual(getRandomAreaFishType());
+      const STORAGE_INDIVIDUAL = {
+        areaId: currentArea.id,
+        fishId: INDIVIDUAL.id,
+        fishLength: INDIVIDUAL.length,
+        fishMass: INDIVIDUAL.mass,
+        notation: INDIVIDUAL.notation
+      }
+      // get fish notation
+
+      let user = getUser();
+      user.catches.push(STORAGE_INDIVIDUAL);
+      setUser(user);
+
       const winMessages = [
         `Félicitations !`,
         `Bravo !`,
@@ -847,7 +893,7 @@ const launchBattle = (domFish) => {
           ${winMessages[randomIntFromInterval(0, winMessages.length - 1)]}<br>
           Vous avez attrapé :
         </span>
-        ${getIndividualFishCard(getRandomIndividual(getRandomAreaFishType()))}
+        ${getIndividualFishCard(INDIVIDUAL)}
       `;
     }
     setPlayerAvailableCells();
@@ -906,6 +952,22 @@ const onPlayClick = () => {
 }
 window.onPlayClick = onPlayClick;
 
+const onSettingsClick = () => {
+  let user = getUser();
+  document.getElementById('main').innerHTML += `
+    <div id="popup" class="popup home-screen">
+      <div class="popup-top">
+        <span>Paramètres</span>
+        <button class="close-popup-button" onclick="onClosePopupClick()">X</button>
+      </div>
+      <div class="settings-display">
+        ${renderSettings()}
+      </div>
+    </div>
+  `;
+}
+window.onSettingsClick = onSettingsClick;
+
 const onAreaButtonClick = (areaIndex) => {
   currentArea = AREAS[areaIndex];
   fromHomeToArea(AREAS[areaIndex]);
@@ -913,7 +975,26 @@ const onAreaButtonClick = (areaIndex) => {
 window.onAreaButtonClick = onAreaButtonClick;
 
 const onRecordsClick = () => {
-  console.log('click records');
+  let user = getUser();
+  document.getElementById('main').innerHTML += `
+    <div id="popup" class="popup home-screen">
+      <div class="popup-top">
+        <span>Records</span>
+        <button class="close-popup-button" onclick="onClosePopupClick()">X</button>
+      </div>
+      <div class="records-display">
+
+        <span>Prises totales : ${user.catches.length}</span>
+
+        <span>Liste des meilleures prises</span>
+
+        <div>
+          <span>à venir</span>
+        </div>
+
+      </div>
+    </div>
+  `;
 }
 window.onRecordsClick = onRecordsClick;
 
@@ -1134,17 +1215,18 @@ window.continueFishing = continueFishing;
 /* =============================== EXECUTION =============================== */
 /* ========================================================================= */
 
-await requestWakeLock();
-//
-let isDev = false;
+setStorage();
+if (getUserSetting('keepScreenAwake').isActive) { await requestWakeLock(); }
+
+const USER = getUser();
 
 let currentArea = AREAS[0];
-let currentRod = 'canne2';
+let currentRod = USER.currentRod;
 
 let isSelected = false;
 let fishGeneration = '';
 
-let currentCharacterId = CHARACTERS[3];
+let currentCharacterId = CHARACTERS[USER.currentCharacter];
 let currentPlayerLineLetterIndex = currentArea.spawnLine - 1;
 let currentPlayerColumn = currentArea.spawnColumn;
 
@@ -1161,3 +1243,68 @@ const fishImages = {
 };
 
 openAppCinematic(true);
+
+const renderSettingsGroup = (settingsGroup) => {
+  let str = `
+  <div id="settingsGroup${settingsGroup.id}" class="settings-group">
+      <span class="settings-group-name">${settingsGroup.name}</span>`;
+
+  settingsGroup.settings.forEach(setting => {
+      str += `
+      <div class="setting-tile">
+          <div class="setting-label-area">
+              <span class="setting-label">${setting.name}</span>
+          </div>
+          <div class="setting-switch-area">
+              <label class="switch" for="${setting.id}">
+                  <input id="${setting.id}" type="checkbox"
+                      onclick="handleCheck('${setting.id}')" ${setting.isActive ? "checked" : ""} />
+                  <span class="slider round"></span>
+              </label>
+          </div>    
+      </div>`;
+  });
+  str += `</div>`;
+  return str;
+}
+const renderSettings = () => {
+  let user = getUser();
+  let str = '';
+  user.settings.forEach(settingsGroup => {
+    str += renderSettingsGroup(settingsGroup);
+  });
+  return str;
+}
+
+const handleCheck = (id) => {
+  let user = getUser();
+
+  user.settings.forEach(settingsGroups => {
+      settingsGroups.settings.forEach(setting => {
+          if (`${setting.id}`== id) {
+              setting.isActive = document.getElementById(id).checked;
+              if (setting.id == 'keepScreenAwake') {
+                setTimeout(() => {
+                  window.location = window.location;
+                }, 300); 
+              }
+              /* if (setting.id == 'music') {
+                  if (setting.isActive) {
+                      if (music.duration > 0 && !music.paused) {
+                          console.log('Music is aldrady playing');
+                      } else {
+                          music.play();
+                      }
+                  } else {
+                      if (music.duration > 0 && !music.paused) {
+                          music.pause();
+                      }
+                  }
+              } */
+          }
+      });
+  });
+
+  setUser(user);
+};
+window.handleCheck = handleCheck;
