@@ -105,6 +105,10 @@ main {
     min-height: 7svh; height: 7svh; max-height: 7svh;
     transition: opacity .5s linear;
 
+    #homeButton, .vivier-button {
+      width: 90px;
+    }
+    
     .vivier-button {
       opacity: 1;
     }
@@ -122,6 +126,7 @@ main {
     background-position: center;
     background-size: contain;
     transition: opacity .5s linear;
+    z-index: 50;
 
     &.home-screen {
       /* padding: var(--cell-size); */
@@ -129,6 +134,7 @@ main {
       gap: var(--cell-size);
 
       .home-buttons-area {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -162,8 +168,31 @@ main {
             opacity: .5;
           }
         }
+
+        #cabinButton {
+          position: absolute;
+          bottom: var(--cell-size);
+          width: calc(6 * var(--cell-size));
+          height: calc(2 * var(--cell-size));
+          background-color: red;
+          opacity: 0;
+          border: 0;
+        }
       }
 
+    }
+
+    .over {
+      position: absolute;
+      top: 0svh;
+      display: flex;
+      min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
+      min-height: var(--screen-size); height: var(--screen-size); max-height: var(--screen-size);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      /* background-color: red; */
+      z-index: 80;
     }
 
     .screen-line {
@@ -173,6 +202,7 @@ main {
       min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
       min-height: var(--cell-size); height: var(--cell-size); max-height: var(--cell-size);
       /* border: 1px solid red; */
+      z-index: 80;
 
       .screen-cell {
         display: flex;
@@ -366,6 +396,8 @@ main {
     background-position: center;
     background-size: contain;
     transition: left .2s linear, top .2s linear;
+    z-index: 75;
+    /*filter: hue-rotate(270deg);*/
   }
 
   .fish {
@@ -382,6 +414,7 @@ main {
     transition: left .2s linear, top .2s linear;
     mix-blend-mode: multiply;
     opacity: .5;
+    z-index: 70;
   }
 
   .popup {

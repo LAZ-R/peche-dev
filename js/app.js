@@ -37,7 +37,7 @@ const renderHomeTemplate = () => {
     <div id="screenArea" class="screen-area home-screen">
       <div id="homeButtonsArea" class="home-buttons-area">
         <button id="playButton" class="home-screen-button" onclick="onPlayClick()">jouer</button>
-        <button id="customizeButton" class="home-screen-button" onclick="onCustomizeClick()" disabled>personnaliser</button>
+        <button id="cabinButton" onclick="onCabinClick()">cabane</button>
         <button id="recordsButton" class="home-screen-button" onclick="onRecordsClick()" disabled>records</button>
       </div>
     </div>
@@ -52,16 +52,16 @@ home_music.preload(); */
 
 const openAppCinematic = (isHome) => {
   renderHomeTemplate();
-  if (!isDev) {
-    if (isHome) {
-      document.getElementById('topArea').style.opacity = 0;
-      document.getElementById('playButton').style.opacity = 0;
-      document.getElementById('customizeButton').style.opacity = 0;
-      document.getElementById('recordsButton').style.opacity = 0;
-      document.getElementById('screenArea').style.opacity = 0;
-      document.getElementById('buttonsArea').style.opacity = 0;
-      document.getElementById('versionNumber').style.opacity = 0;
-    }
+
+  if (isHome) {
+    document.getElementById('cabinButton').setAttribute('disabled', true);
+    document.getElementById('topArea').style.opacity = 0;
+    document.getElementById('playButton').style.opacity = 0;
+    //document.getElementById('cabinButton').style.opacity = 0;
+    document.getElementById('recordsButton').style.opacity = 0;
+    document.getElementById('screenArea').style.opacity = 0;
+    document.getElementById('buttonsArea').style.opacity = 0;
+    document.getElementById('versionNumber').style.opacity = 0;
   }
   
   if (isHome) {
@@ -72,36 +72,37 @@ const openAppCinematic = (isHome) => {
     }, 500);
   }
 
-  if (!isDev) {
-    if (isHome) {
+  if (isHome) {
+    setTimeout(() => {
+      document.getElementById('screenArea').style.opacity = 1;
+      document.getElementById('buttonsArea').style.opacity = 1;
       setTimeout(() => {
-        document.getElementById('screenArea').style.opacity = 1;
-        document.getElementById('buttonsArea').style.opacity = 1;
-        setTimeout(() => {
-          document.getElementById('topArea').style.opacity = 1;
+        document.getElementById('topArea').style.opacity = 1;
+        setTimeout(() => { 
+          document.getElementById('playButton').style.opacity = 1;
           setTimeout(() => { 
-            document.getElementById('playButton').style.opacity = 1;
-            setTimeout(() => { 
-              document.getElementById('customizeButton').style.opacity = .5;
-              setTimeout(() => { 
-                document.getElementById('recordsButton').style.opacity = .5;
-                setTimeout(() => {
-                  document.getElementById('versionNumber').style.opacity = 1;
-                  // Futur bouton paramètres
-                }, 500);
-              }, 500);
+            document.getElementById('recordsButton').style.opacity = .5;
+            setTimeout(() => {
+              document.getElementById('versionNumber').style.opacity = 1;
+              document.getElementById('cabinButton').removeAttribute('disabled');
+              // Futur bouton paramètres
             }, 500);
           }, 500);
-        }, 1000);
+        }, 500);
       }, 500);
-    }
+    }, 500);
   }
+  
 }
 
 const fromHomeToArea = (area) => {
   document.getElementById('main').style.opacity = 0;
   setTimeout(() => {
-    defineArea(area);
+    if (area != undefined) {
+      defineArea(area);
+    } else {
+      defineCabin();
+    }
     setTimeout(() => {
       document.getElementById('main').style.opacity = 1;
     }, 500);
@@ -113,6 +114,20 @@ const fromAreaToHome = (area) => {
   setTimeout(() => {
     openAppCinematic();
   }, 500);
+}
+
+const defineCabin = () => {
+  document.getElementById('versionNumber').remove();
+
+  document.getElementById('screenArea').innerHTML = '';
+  document.getElementById('screenArea').classList.remove('home-screen');
+  document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/cabin/cabin.png')`;
+
+  document.getElementById('topArea').innerHTML = `
+    <button id="homeButton" onclick="onHomeClick(true)">accueil</button>
+    <span>la cabane</span>
+    <span class="vivier-button"></span>
+  `;
 }
 
 const defineArea = (area) => {
@@ -309,8 +324,9 @@ const renderBlankTemplate = () => {
   document.getElementById('main').innerHTML = `
   <div id="topArea" class="top-area"></div>
     <div id="screenArea" class="screen-area">
-      ${renderScreenLines()}
       <div id="player" class="player"></div>
+      <div id="over" class="over"></div>
+      ${renderScreenLines()}
     </div>
     <div id="buttonsArea" class="buttons-area">
       <div class="cross-container">
@@ -331,7 +347,11 @@ const renderCurrentArea = () => {
     <button id="homeButton" onclick="onHomeClick()">accueil</button>
     <span>${currentArea.id}</span>
     <button id="vivierButton" class="vivier-button" onclick="onVivierClick()">vivier</button>`;
+
   document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/${currentArea.id}/${currentArea.img}.webp')`;
+  if (currentArea.imgOver != undefined) {
+    document.getElementById('over').style.backgroundImage = `url('./medias/images/areas/${currentArea.id}/${currentArea.imgOver}.webp')`;
+  }
   currentArea.walkableCells.forEach(cell => {
     document.getElementById(cell).classList.add('walkable');
   });
@@ -897,10 +917,11 @@ const onRecordsClick = () => {
 }
 window.onRecordsClick = onRecordsClick;
 
-const onCustomizeClick = () => {
-  console.log('click customize');
+const onCabinClick = () => {
+  console.log('click cabin');
+  fromHomeToArea();
 }
-window.onCustomizeClick = onCustomizeClick;
+window.onCabinClick = onCabinClick;
 
 const onClosePopupClick = (popupName) => {
   document.getElementById('popup').remove();
@@ -915,32 +936,36 @@ window.onClosePopupClick = onClosePopupClick;
 /* =============================== Area page =============================== */
 
 // Top part -----------------------------------------
-const onHomeClick = () => {
+const onHomeClick = (isFromCabin) => {
 
-  let previousPopup = document.getElementById('popup');
-  if (previousPopup != null) {
-    previousPopup.remove();
-  }
-
-  document.getElementById('vivierButton').setAttribute('disabled', true);
-  document.getElementById('homeButton').setAttribute('disabled', true);
-
-  document.getElementById('main').innerHTML += `
-    <div id="popup" class="popup goto-home">
-      <div class="popup-top">
-        <span>Retour à l'accueil</span>
-        <button class="close-popup-button" onclick="onClosePopupClick('home')">X</button>
-      </div>
-      <div>
-        <span>Voulez-vous vraiment retourner à l'accueil ?</span>
+  if (isFromCabin == true) {
+    leaveArea();
+  } else {
+    let previousPopup = document.getElementById('popup');
+    if (previousPopup != null) {
+      previousPopup.remove();
+    }
+  
+    document.getElementById('vivierButton').setAttribute('disabled', true);
+    document.getElementById('homeButton').setAttribute('disabled', true);
+  
+    document.getElementById('main').innerHTML += `
+      <div id="popup" class="popup goto-home">
+        <div class="popup-top">
+          <span>Retour à l'accueil</span>
+          <button class="close-popup-button" onclick="onClosePopupClick('home')">X</button>
+        </div>
         <div>
-          <button onclick="onClosePopupClick('home')">non</button>
-          <button onclick="leaveArea()">oui</button>
+          <span>Voulez-vous vraiment retourner à l'accueil ?</span>
+          <div>
+            <button onclick="onClosePopupClick('home')">non</button>
+            <button onclick="leaveArea()">oui</button>
+          </div>
         </div>
       </div>
-    </div>
-  `;
-  setTouchEventCross();
+    `;
+    setTouchEventCross();
+  }
 }
 window.onHomeClick = onHomeClick;
 
