@@ -767,9 +767,37 @@ const getFishById = (id) => {
   return currentArea.fishes.filter((fish) => fish.id == id)[0];
 }
 
+const getBestCatchedFishInfos = (fishId) => {
+  let bestLength = 0;
+  let bestMass = 0;
+  let user = getUser();
+
+  user.catches.forEach(catchedFish => {
+    if (catchedFish.fishId == fishId) {
+      if (catchedFish.fishLength > bestLength) {
+        bestLength = catchedFish.fishLength;
+      }
+      if (catchedFish.fishMass > bestMass) {
+        bestMass = catchedFish.fishMass;
+      }
+    }
+  });
+
+  return {
+    bestLength: bestLength,
+    bestMass: bestMass,
+  }
+}
+
 const getIndividualFishCard = (individualFish) => {
   const baseFish = getFishById(individualFish.id);
   const imgSrc = baseFish.img == '' ? `./medias/images/no-picture.png` : `./medias/images/areas/${currentArea.id}/fishes/${baseFish.img}.png`;
+
+  const previousBest = getBestCatchedFishInfos(individualFish.id);
+  const isBestLength = individualFish.length > previousBest.bestLength;
+  const isBestMass = individualFish.mass > previousBest.bestMass;
+
+  const hasAlreadyBeenCatched = hasFishAlreadyBeenCatched(individualFish.id);
 
   return `
     <div class="fish-card">
@@ -777,10 +805,11 @@ const getIndividualFishCard = (individualFish) => {
         <span>${baseFish.commonName}</span>
         <span>(${baseFish.scientificName})</span>
       </div>
+      ${!hasAlreadyBeenCatched ? `<div class="new-fish">nouveau</div>` : ''}
       <img class="fish-card-img" style="" src="${imgSrc}" />
       <div class="fish-card-bloc">
-        <span>Taille : ${individualFish.length}cm</span>
-        <span>Poids : ${individualFish.mass}g</span>
+        <span><span>Taille : ${individualFish.length}cm</span>${isBestLength && hasAlreadyBeenCatched ? `<span class="best">record</span>` : ''}</span>
+        <span><span>Poids : ${individualFish.mass}g</span>${isBestMass && hasAlreadyBeenCatched ? `<span class="best">record</span>` : ''}</span>
         <div class="notation-area">${getNotationDiv(individualFish.notation)}</div>
       </div>
     </div>
@@ -855,18 +884,6 @@ const launchBattle = (domFish) => {
     } else { // Bataille gagnée
       // récupération message aléatoire
       const INDIVIDUAL = getRandomIndividual(getRandomAreaFishType());
-      const STORAGE_INDIVIDUAL = {
-        areaId: currentArea.id,
-        fishId: INDIVIDUAL.id,
-        fishLength: INDIVIDUAL.length,
-        fishMass: INDIVIDUAL.mass,
-        notation: INDIVIDUAL.notation
-      }
-      // get fish notation
-
-      let user = getUser();
-      user.catches.push(STORAGE_INDIVIDUAL);
-      setUser(user);
 
       const winMessages = [
         `Félicitations !`,
@@ -895,6 +912,19 @@ const launchBattle = (domFish) => {
         </span>
         ${getIndividualFishCard(INDIVIDUAL)}
       `;
+
+      const STORAGE_INDIVIDUAL = {
+        areaId: currentArea.id,
+        fishId: INDIVIDUAL.id,
+        fishLength: INDIVIDUAL.length,
+        fishMass: INDIVIDUAL.mass,
+        notation: INDIVIDUAL.notation
+      }
+      // get fish notation
+
+      let user = getUser();
+      user.catches.push(STORAGE_INDIVIDUAL);
+      setUser(user);
     }
     setPlayerAvailableCells();
     document.getElementById('buttonsArea').innerHTML = `<button class="continue-button" onclick="continueFishing()">Continuer</button>`;
@@ -1073,7 +1103,9 @@ const onVivierClick = () => {
       ${renderAreaVivier()}
     </div>
   `;
-  setTouchEventCross();
+  if (document.getElementById('crossLeft') != null) {
+    setTouchEventCross();
+  }
 }
 window.onVivierClick = onVivierClick;
 
@@ -1155,6 +1187,50 @@ const movePlayer = (direction) => {
 }
 window.movePlayer = movePlayer;
 
+const applyCharacterImgFromSelectedCell = (cellId) => {
+  const PLAYER = document.getElementById('player');
+
+  
+  if ( // LEFT ---------------------------------------------
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 3}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 2}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.left})`;
+  } else if (
+    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 3]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn - 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn + 1}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.back})`;
+  } else if (
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 3}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 2}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.right})`;
+  } else if (
+    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 3]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn + 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn - 1}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.front})`;
+  } else {
+    /* leftUpCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 1}`;
+    upRightCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 1}`;
+    rightDownCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 1}`;
+    downLeftCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 1}`; */
+  }
+}
+
 const onCellClick = (cellId) => {
   //console.log(cellId);
   const CELL = document.getElementById(cellId);
@@ -1163,6 +1239,9 @@ const onCellClick = (cellId) => {
     if (CELL.classList.contains('selectable')) {
       CELL.classList.replace('selectable', 'selected');
       isSelected = true;
+
+      applyCharacterImgFromSelectedCell(cellId);
+
       document.getElementById('buttonsArea').innerHTML = '';
       document.getElementById('buttonsArea').innerHTML = `<button class="abort-button" onclick="abortFishing('${cellId}')">ANNULER</button>`;
     }
@@ -1212,37 +1291,8 @@ const continueFishing = () => {
 window.continueFishing = continueFishing;
 
 /* ========================================================================= */
-/* =============================== EXECUTION =============================== */
+/* =============================== SETTINGS ================================ */
 /* ========================================================================= */
-
-setStorage();
-if (getUserSetting('keepScreenAwake').isActive) { await requestWakeLock(); }
-
-const USER = getUser();
-
-let currentArea = AREAS[0];
-let currentRod = USER.currentRod;
-
-let isSelected = false;
-let fishGeneration = '';
-
-let currentCharacterId = CHARACTERS[USER.currentCharacter];
-let currentPlayerLineLetterIndex = currentArea.spawnLine - 1;
-let currentPlayerColumn = currentArea.spawnColumn;
-
-let isPlayerMoving = false;
-let currentCharacter = getCurrentPlayerSprites();
-
-let fishes = 0;
-let AREA_FISHES = [];
-const fishImages = {
-  front: `./medias/images/characters/fish-front.webp`,
-  back: `./medias/images/characters/fish-back.webp`,
-  left: `./medias/images/characters/fish-left.webp`,
-  right: `./medias/images/characters/fish-right.webp`,
-};
-
-openAppCinematic(true);
 
 const renderSettingsGroup = (settingsGroup) => {
   let str = `
@@ -1308,3 +1358,51 @@ const handleCheck = (id) => {
   setUser(user);
 };
 window.handleCheck = handleCheck;
+
+/* ========================================================================= */
+/* =============================== EXECUTION =============================== */
+/* ========================================================================= */
+
+setStorage();
+if (getUserSetting('keepScreenAwake').isActive) { await requestWakeLock(); }
+
+const USER = getUser();
+
+let currentArea = AREAS[0];
+let currentRod = USER.currentRod;
+
+let isSelected = false;
+let fishGeneration = '';
+
+let currentCharacterId = CHARACTERS[USER.currentCharacter];
+let currentPlayerLineLetterIndex = currentArea.spawnLine - 1;
+let currentPlayerColumn = currentArea.spawnColumn;
+
+let isPlayerMoving = false;
+let currentCharacter = getCurrentPlayerSprites();
+
+let fishes = 0;
+let AREA_FISHES = [];
+const fishImages = {
+  front: `./medias/images/characters/fish-front.webp`,
+  back: `./medias/images/characters/fish-back.webp`,
+  left: `./medias/images/characters/fish-left.webp`,
+  right: `./medias/images/characters/fish-right.webp`,
+};
+
+openAppCinematic(true);
+
+// ------------------------------------------------------------------------------------
+
+const hasFishAlreadyBeenCatched = (fishId) => {
+  let hasBeenCatched = false;
+  let user = getUser();
+  
+  user.catches.forEach(catchedFish => {
+    if (catchedFish.fishId == fishId) {
+      hasBeenCatched =  true;
+    }
+  });
+
+  return hasBeenCatched;
+}

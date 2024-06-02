@@ -253,12 +253,12 @@ main {
         }
 
         &.touched {
-          border: 3px solid #f71aff;
-          background-color: #e953fd4b;
+          /* border: 3px solid #f71aff;
+          background-color: #e953fd4b; */
           transform: scale(2);
           z-index: 101;
-          /* border: 2px solid #00ff00;
-          background-color: #00ff004b; */
+          border: 3px solid #e940ef;
+          background-color: #e36af44b;
         }
 
         .cell-name {
@@ -761,6 +761,7 @@ main {
     }
 
     .fish-card {
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -775,11 +776,26 @@ main {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        & > span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .best {
+          animation: blink .5s infinite;
+        }
       }
 
       .fish-card-img {
         height: 64px;
         aspect-ratio: 16/8;
+      }
+
+      .new-fish {
+        animation: blink .5s infinite;
       }
     }
   }
@@ -821,5 +837,20 @@ main {
   }
   to {
     width: 100%;
+  }
+}
+
+@keyframes blink {
+  0% {
+    color: #ffffff;
+  }
+  25% {
+    color: #c3ffd7;
+  }
+  25% {
+    color: #fdc3ff;
+  }
+  100% {
+    color: #ffffff;
   }
 }

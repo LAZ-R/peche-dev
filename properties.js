@@ -1,10 +1,14 @@
 export const APP_NAME = 'Pêche (dev)';
-export const APP_VERSION = '0.0.19'; // v 0.0.19 - uncatched = B&W
-export const APP_SHORT_NAME = `pechedev0018`;
+export const APP_VERSION = '0.0.20'; // v 0.0.20 - anims new catch et record + changement sprite au select
+export const APP_SHORT_NAME = `pechedev0020`;
 
 /*
   RAF ----------------------------------------------------------
 
+  - Ajouter historique session
+
+  - Ajouter logos map finie
+  
   - Map france - ajouter :
     Sandre
     Carpe
