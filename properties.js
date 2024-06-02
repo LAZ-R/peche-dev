@@ -1,5 +1,5 @@
 export const APP_NAME = 'Pêche (dev)';
-export const APP_VERSION = '0.0.20'; // v 0.0.20 - anims new catch et record + changement sprite au select
+export const APP_VERSION = '0.0.21'; // v 0.0.21 - fix position "nouveau"
 export const APP_SHORT_NAME = `pechedev0020`;
 
 /*

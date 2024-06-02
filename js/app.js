@@ -801,11 +801,11 @@ const getIndividualFishCard = (individualFish) => {
 
   return `
     <div class="fish-card">
+      ${!hasAlreadyBeenCatched ? `<div class="new-fish">nouveau</div>` : ''}
       <div class="fish-card-bloc fish-name">
         <span>${baseFish.commonName}</span>
         <span>(${baseFish.scientificName})</span>
       </div>
-      ${!hasAlreadyBeenCatched ? `<div class="new-fish">nouveau</div>` : ''}
       <img class="fish-card-img" style="" src="${imgSrc}" />
       <div class="fish-card-bloc">
         <span><span>Taille : ${individualFish.length}cm</span>${isBestLength && hasAlreadyBeenCatched ? `<span class="best">record</span>` : ''}</span>
