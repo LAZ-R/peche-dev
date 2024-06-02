@@ -153,9 +153,9 @@ const renderVivierFishCard = (fish) => {
   let bestNotation = 0;
 
   user.catches.forEach(catchedFish => {
-    console.log(catchedFish.fishId);
+    //console.log(catchedFish.fishId);
     if (fish.id == catchedFish.fishId) {
-      console.log('has been catched');
+      //console.log('has been catched');
       hasBeenCatch = true;
       if (catchedFish.notation > bestNotation) {
         bestNotation = catchedFish.notation;
@@ -171,7 +171,7 @@ const renderVivierFishCard = (fish) => {
         <span>${fish.commonName}</span>
         <span>(${fish.scientificName})</span>
         </div>
-        ${hasBeenCatch ?  `<div class="notation-area small">${getNotationDiv(bestNotation)}</div>` : ''}
+        ${hasBeenCatch ?  `<div class="notation-area small">${getNotationImages(bestNotation)}</div>` : ''}
     </div>
   `;
 }
@@ -346,15 +346,48 @@ const renderBlankTemplate = () => {
       ${renderScreenLines()}
     </div>
     <div id="buttonsArea" class="buttons-area">
-      <div class="cross-container">
-        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"></button>
-        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
-        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
-        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
-      </div>
+      ${getCrossContainer()}
+      ${getHistoryContainer()}
     </div>
   `;
   setTouchEventCross();
+}
+
+const getCrossContainer = () => {
+  return `
+    <div class="cross-container">
+      <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"></button>
+      <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
+      <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
+      <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
+    </div>`;
+}
+
+const getHistoryContainer = () => {
+  return `
+    <div class="history-container">
+      <span class="title">Prises de la session</span>
+      <div class="history-data">
+        ${getHistoryFishCards()}
+      </div>
+    </div>`;
+}
+
+const getHistoryFishCard = (fish) => {
+  return `
+    <div class="history-fish-card">
+      <img src="./medias/images/areas/${currentArea.id}/fishes/${fish.id}.png" />
+      <div class="notation-area small">${getNotationImages(fish.notation)}</div>
+    </div>
+  `;
+}
+
+const getHistoryFishCards = () => {
+  let str = '';
+  currentAreaCatches.toReversed().forEach(fish => {
+    str += getHistoryFishCard(fish);
+  });
+  return str
 }
 
 /* =============================== Area =============================== */
@@ -565,6 +598,49 @@ const clearPlayerAvailableCells = () => {
       //clearPlayerAvailableCell(document.getElementById(down2Left2CellId));
       clearPlayerAvailableCell(document.getElementById(down1Left2CellId));
     }
+  }
+}
+
+const applyCharacterImgFromSelectedCell = (cellId) => {
+  const PLAYER = document.getElementById('player');
+
+  if ( // LEFT ---------------------------------------------
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 3}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 2}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.left})`;
+  } else if (
+    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 3]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn - 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn + 1}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.back})`;
+  } else if (
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 3}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 2}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 2}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.right})`;
+  } else if (
+    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 3]}${currentPlayerColumn}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn + 1}` ||
+    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn - 1}` 
+  ) {
+    PLAYER.style.backgroundImage = `url(${currentCharacter.front})`;
+  } else {
+    /* leftUpCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 1}`;
+    upRightCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 1}`;
+    rightDownCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 1}`;
+    downLeftCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 1}`; */
   }
 }
 
@@ -810,13 +886,13 @@ const getIndividualFishCard = (individualFish) => {
       <div class="fish-card-bloc">
         <span><span>Taille : ${individualFish.length}cm</span>${isBestLength && hasAlreadyBeenCatched ? `<span class="best">record</span>` : ''}</span>
         <span><span>Poids : ${individualFish.mass}g</span>${isBestMass && hasAlreadyBeenCatched ? `<span class="best">record</span>` : ''}</span>
-        <div class="notation-area">${getNotationDiv(individualFish.notation)}</div>
+        <div class="notation-area">${getNotationImages(individualFish.notation)}</div>
       </div>
     </div>
   `;
 }
 
-const getNotationDiv = (notation) => {
+const getNotationImages = (notation) => {
   return `
     <img src="${notation > 0 ? './medias/images/icons/star-solid.svg' : './medias/images/icons/star-regular.svg'}" class="${notation > 0 ? 'turned-on' : 'turned-off'}" />
     <img src="${notation > 1 ? './medias/images/icons/star-solid.svg' : './medias/images/icons/star-regular.svg'}" class="${notation > 1 ? 'turned-on' : 'turned-off'}" />
@@ -920,11 +996,18 @@ const launchBattle = (domFish) => {
         fishMass: INDIVIDUAL.mass,
         notation: INDIVIDUAL.notation
       }
-      // get fish notation
 
       let user = getUser();
       user.catches.push(STORAGE_INDIVIDUAL);
       setUser(user);
+
+      let areaCatch = {
+        id: INDIVIDUAL.id,
+        notation: INDIVIDUAL.notation
+      }
+      currentAreaCatches.push(areaCatch);
+      console.table(currentAreaCatches);
+
     }
     setPlayerAvailableCells();
     document.getElementById('buttonsArea').innerHTML = `<button class="continue-button" onclick="continueFishing()">Continuer</button>`;
@@ -983,7 +1066,6 @@ const onPlayClick = () => {
 window.onPlayClick = onPlayClick;
 
 const onSettingsClick = () => {
-  let user = getUser();
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup home-screen">
       <div class="popup-top">
@@ -1087,6 +1169,7 @@ const leaveArea = () => {
   });
   clearInterval(fishGeneration);
   AREA_FISHES = [];
+  currentAreaCatches = [];
   fromAreaToHome();
 }
 window.leaveArea = leaveArea;
@@ -1109,7 +1192,6 @@ const onVivierClick = () => {
 }
 window.onVivierClick = onVivierClick;
 
-let isOnRightFoot = true;
 // Screen -------------------------------------------
 const movePlayer = (direction) => {
   if (!isPlayerMoving) {
@@ -1187,50 +1269,6 @@ const movePlayer = (direction) => {
 }
 window.movePlayer = movePlayer;
 
-const applyCharacterImgFromSelectedCell = (cellId) => {
-  const PLAYER = document.getElementById('player');
-
-  
-  if ( // LEFT ---------------------------------------------
-    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 1}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 2}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn - 3}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 2}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 2}` 
-  ) {
-    PLAYER.style.backgroundImage = `url(${currentCharacter.left})`;
-  } else if (
-    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex - 3]}${currentPlayerColumn}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn - 1}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex - 2]}${currentPlayerColumn + 1}` 
-  ) {
-    PLAYER.style.backgroundImage = `url(${currentCharacter.back})`;
-  } else if (
-    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 1}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 2}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex]}${currentPlayerColumn + 3}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 2}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 2}` 
-  ) {
-    PLAYER.style.backgroundImage = `url(${currentCharacter.right})`;
-  } else if (
-    cellId == `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex + 3]}${currentPlayerColumn}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn + 1}` ||
-    cellId == `${letters[currentPlayerLineLetterIndex + 2]}${currentPlayerColumn - 1}` 
-  ) {
-    PLAYER.style.backgroundImage = `url(${currentCharacter.front})`;
-  } else {
-    /* leftUpCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn - 1}`;
-    upRightCellId = `${letters[currentPlayerLineLetterIndex - 1]}${currentPlayerColumn + 1}`;
-    rightDownCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn + 1}`;
-    downLeftCellId = `${letters[currentPlayerLineLetterIndex + 1]}${currentPlayerColumn - 1}`; */
-  }
-}
-
 const onCellClick = (cellId) => {
   //console.log(cellId);
   const CELL = document.getElementById(cellId);
@@ -1262,12 +1300,8 @@ const abortFishing = (cellId) => {
       isSelected = false;
       document.getElementById('buttonsArea').innerHTML = '';
       document.getElementById('buttonsArea').innerHTML = `
-      <div class="cross-container">
-        <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"></button>
-        <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
-        <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
-        <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
-      </div>`;
+      ${getCrossContainer()}
+      ${getHistoryContainer()}`;
       setTouchEventCross();
     }
   }
@@ -1278,12 +1312,8 @@ const continueFishing = () => {
   isSelected = false;
   document.getElementById('buttonsArea').innerHTML = '';
   document.getElementById('buttonsArea').innerHTML = `
-  <div class="cross-container">
-    <button id="crossLeft" class="cross-button left" onclick="movePlayer('left')"></button>
-    <button id="crossUp" class="cross-button up" onclick="movePlayer('up')"></button>
-    <button id="crossRight" class="cross-button right" onclick="movePlayer('right')"></button>
-    <button id="crossDown" class="cross-button down" onclick="movePlayer('down')"></button>
-  </div>`;
+  ${getCrossContainer()}
+  ${getHistoryContainer()}`;
   setTouchEventCross();
   document.getElementById('popup').remove();
   document.getElementById('vivierButton').removeAttribute('disabled');
@@ -1369,6 +1399,7 @@ if (getUserSetting('keepScreenAwake').isActive) { await requestWakeLock(); }
 const USER = getUser();
 
 let currentArea = AREAS[0];
+let currentAreaCatches = [];
 let currentRod = USER.currentRod;
 
 let isSelected = false;
@@ -1380,6 +1411,7 @@ let currentPlayerColumn = currentArea.spawnColumn;
 
 let isPlayerMoving = false;
 let currentCharacter = getCurrentPlayerSprites();
+let isOnRightFoot = true;
 
 let fishes = 0;
 let AREA_FISHES = [];
@@ -1406,3 +1438,10 @@ const hasFishAlreadyBeenCatched = (fishId) => {
 
   return hasBeenCatched;
 }
+
+
+
+
+
+
+

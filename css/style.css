@@ -274,12 +274,17 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5svw;
+    padding: var(--cell-size);
     min-width: var(--screen-size); width: var(--screen-size); max-width: var(--screen-size);
-    min-height: calc(var(--cross-size) + 10svw); height: calc(var(--cross-size) + 10svw); max-height: calc(var(--cross-size) + 10svw);
+    min-height: calc(var(--cross-size) + calc(var(--cell-size) * 2)); height: calc(var(--cross-size) + calc(var(--cell-size) * 2)); max-height: calc(var(--cross-size) + calc(var(--cell-size) * 2));
 
     &.home-screen {
       /* background-color: rebeccapurple; */
+    }
+
+    &:has(.cross-container) {
+      justify-content: space-between;
+      gap: var(--cell-size);
     }
 
     .cross-container {
@@ -341,6 +346,48 @@ main {
           background-image: url('../medias/images/icons/caret-down-grey.png');
           left: var(--cross-button-size);
           top: calc(2 * var(--cross-button-size));
+        }
+      }
+    }
+
+    .history-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      min-height: 100%; height: 100%; max-height: 100%;
+      /* background-color: magenta; */
+
+      .title {
+        font-size: 12px;
+        margin-bottom: calc(var(--cell-size) / 4);
+      }
+
+      .history-data {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: fit-content; height: fit-content; max-height: 100%;
+        gap: calc(var(--cell-size) / 4);
+        overflow-y: scroll;
+
+        .history-fish-card {
+          background-color: var(--grey-70);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          min-width: 100%; width: 100%; max-width: 100%;
+          padding: calc(var(--cell-size) / 4);
+          min-height: calc(var(--cell-size) * 2); height: calc(var(--cell-size) * 2); max-height: calc(var(--cell-size) * 2);
+          border-radius: 4px;
+
+          > img {
+            aspect-ratio: 16/8;
+            height: 75%;
+          }
+
+          > .notation-area {
+            filter: invert();
+          }
         }
       }
     }
@@ -535,6 +582,7 @@ main {
         min-height: calc(100% - (2 * var(--cell-size))); height: calc(100% - (2 * var(--cell-size))); max-height: calc(100% - (2 * var(--cell-size)));
         overflow-y: scroll;
         gap: var(--cell-size);
+        padding-top: var(--cell-size);
       }
 
       .settings-group {

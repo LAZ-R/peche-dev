@@ -1,11 +1,9 @@
 export const APP_NAME = 'Pêche (dev)';
-export const APP_VERSION = '0.0.21'; // v 0.0.21 - fix position "nouveau"
+export const APP_VERSION = '0.0.22'; // v 0.0.22 - Ajout historique session
 export const APP_SHORT_NAME = `pechedev0020`;
 
 /*
   RAF ----------------------------------------------------------
-
-  - Ajouter historique session
 
   - Ajouter logos map finie
   
