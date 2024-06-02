@@ -82,7 +82,7 @@ const openAppCinematic = (isHome) => {
         setTimeout(() => { 
           document.getElementById('playButton').style.opacity = 1;
           setTimeout(() => { 
-            document.getElementById('recordsButton').style.opacity = .5;
+            document.getElementById('recordsButton').style.opacity = 1;
             setTimeout(() => {
               document.getElementById('versionNumber').style.opacity = 1;
               document.getElementById('cabinButton').removeAttribute('disabled');
@@ -169,7 +169,7 @@ const renderVivierFishCard = (fish) => {
       <img src="${imgSrc}" />
       <div>
         <span>${fish.commonName}</span>
-        <span>(${fish.scientificName})</span>
+        <span>${fish.scientificName}</span>
         </div>
         ${hasBeenCatch ?  `<div class="notation-area small">${getNotationImages(bestNotation)}</div>` : ''}
     </div>
@@ -366,7 +366,7 @@ const getCrossContainer = () => {
 const getHistoryContainer = () => {
   return `
     <div class="history-container">
-      <span class="title">Prises de la session</span>
+      <span class="title">prises de la session</span>
       <div class="history-data">
         ${getHistoryFishCards()}
       </div>
@@ -875,7 +875,7 @@ const getIndividualFishCard = (individualFish, isBestLength, isBestMass, hasAlre
       ${!hasAlreadyBeenCatched ? `<div class="blinking-text">nouveau</div>` : ''}
       <div class="fish-card-bloc fish-name">
         <span>${baseFish.commonName}</span>
-        <span>(${baseFish.scientificName})</span>
+        <span>${baseFish.scientificName}</span>
       </div>
       <img class="fish-card-img" style="" src="${imgSrc}" />
       <div class="fish-card-bloc">
@@ -908,15 +908,15 @@ const launchBattle = (domFish) => {
 
   // récupération message aléatoire
   const battleMessages = [
-    `Combat intense en cours !`,
-    `Remontée en progression...`,
-    `Ça avance, on lâche rien !`,
-    `Lutte acharnée en cours !`,
-    `On s'accroche, ça tire fort !`,
-    `La prise est amorcée !`,
-    `Ligne tendue, effort constant...`,
-    `On tire, encore un peu !`,
-    `La bataille est lancée !`,
+    `combat intense en cours !`,
+    `remontée en progression...`,
+    `ça avance, on lâche rien !`,
+    `lutte acharnée en cours !`,
+    `on s'accroche, ça tire fort !`,
+    `la prise est amorcée !`,
+    `ligne tendue, effort constant...`,
+    `on tire, encore un peu !`,
+    `la bataille est lancée !`,
   ];
 
   let previousPopup = document.getElementById('popup');
@@ -937,16 +937,16 @@ const launchBattle = (domFish) => {
     if (rnd < 0.33) { // Bataille foirée
       // récupération message aléatoire
       const failMessages = [
-        `Zut !<br>Le poisson s'est enfui...`,
-        `Mince alors !<br>Le poisson a réussi à s'échapper...`,
-        `Ah, pas de chance !<br>Le poisson a filé...`,
-        `Oh non !<br>Le poisson a réussi à s'échapper...`,
-        `Raté !<br>Le poisson s'est libéré...`,
-        `Oups !<br>Le poisson a pris la fuite...`,
-        `Dommage !<br>Le poisson est parti...`,
-        `Ah, c'est manqué !<br>Le poisson a disparu...`,
-        `Pas cette fois !<br>Le poisson s'est échappé...`,
-        `Tant pis !<br>Le poisson a réussi à s'enfuir...`,
+        `zut !<br>le poisson s'est enfui...`,
+        `mince alors !<br>le poisson a réussi à s'échapper...`,
+        `ah, pas de chance !<br>le poisson a filé...`,
+        `oh non !<br>le poisson a réussi à s'échapper...`,
+        `raté !<br>le poisson s'est libéré...`,
+        `oups !<br>le poisson a pris la fuite...`,
+        `dommage !<br>le poisson est parti...`,
+        `ah, c'est manqué !<br>le poisson a disparu...`,
+        `pas cette fois !<br>le poisson s'est échappé...`,
+        `tant pis !<br>le poisson a réussi à s'enfuir...`,
       ];
       document.getElementById('popup').innerHTML = ``;
       document.getElementById('popup').innerHTML = `
@@ -963,29 +963,29 @@ const launchBattle = (domFish) => {
       const hasAlreadyBeenCatched = hasFishAlreadyBeenCatched(INDIVIDUAL.id);
 
       const winMessages = [
-        `Félicitations !`,
-        `Bravo !`,
-        `Bien joué !`,
-        `Super !`,
-        `Excellent !`,
-        `Chapeau !`,
-        `Magnifique !`,
-        `Génial !`,
-        `Parfait !`,
-        `Impressionnant !`,
-        `Splendide !`,
-        `Fantastique !`,
-        `Incroyable !`,
-        `Épatant !`,
-        `Admirable !`,
-        `Remarquable !`,
-        `Sensationnel !`,
+        `félicitations !`,
+        `bravo !`,
+        `bien joué !`,
+        `super !`,
+        `excellent !`,
+        `chapeau !`,
+        `magnifique !`,
+        `génial !`,
+        `parfait !`,
+        `impressionnant !`,
+        `splendide !`,
+        `fantastique !`,
+        `incroyable !`,
+        `épatant !`,
+        `admirable !`,
+        `remarquable !`,
+        `sensationnel !`,
       ];
       document.getElementById('popup').innerHTML = ``;
       document.getElementById('popup').innerHTML = `
         <span>
           ${winMessages[randomIntFromInterval(0, winMessages.length - 1)]}<br>
-          Vous avez attrapé :
+          vous avez attrapé :
         </span>
         ${getIndividualFishCard(INDIVIDUAL, isBestLength, isBestMass, hasAlreadyBeenCatched)}
       `;
@@ -1013,7 +1013,7 @@ const launchBattle = (domFish) => {
 
     }
     setPlayerAvailableCells();
-    document.getElementById('buttonsArea').innerHTML = `<button class="continue-button" onclick="continueFishing()">Continuer</button>`;
+    document.getElementById('buttonsArea').innerHTML = `<button class="continue-button" onclick="continueFishing()">continuer</button>`;
   }, 3500);
 }
 
@@ -1028,39 +1028,34 @@ const onPlayClick = () => {
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup home-screen">
       <div class="popup-top">
-        <span>Destination</span>
+        <span>destination</span>
         <button class="close-popup-button" onclick="onClosePopupClick()">X</button>
       </div>
       <div class="area-selector">
 
-        <div class="area-line">
-          <button class="area-button" onclick="onAreaButtonClick(0)">
-            <img src="./medias/images/areas/france/france-fix.webp" />
-            <span>france</span>
-          </button>
-          <button class="area-button" onclick="onAreaButtonClick(1)" disabled>
-          <img src="./medias/images/areas/amazonie/amazonie-fix.webp" />
-            <span>amazonie</span>
-          </button>
+        <div class="area-group-separator">
+          <div class="separator-part"></div>
+          <div>campagne</div>
+          <div class="separator-part"></div>
         </div>
 
-        <div class="area-line">
-          <button class="area-button" onclick="onAreaButtonClick()" disabled>
-          <div class="no-img"></div>
-            <span>???</span>
-          </button>
-          <button class="area-button" onclick="onAreaButtonClick()" disabled>
-          <div class="no-img"></div>
-            <span>???</span>
-          </button>
+        <button class="area-group-container" onclick="onAreaGroupClick('europe')">
+          <span class="title">europe</span>
+        </button>
+
+        <button class="area-group-container" disabled>
+          <span class="title">???</span>
+        </button>
+
+        <div class="area-group-separator">
+          <div class="separator-part"></div>
+          <div>extensions</div>
+          <div class="separator-part"></div>
         </div>
 
-        <div class="area-line">
-          <button class="area-button" onclick="onAreaButtonClick()" disabled>
-          <div class="no-img"></div>
-            <span>???</span>
-          </button>
-        </div>
+        <button class="area-group-container" disabled>
+          <span class="title">???</span>
+        </button>
 
       </div>
     </div>
@@ -1068,11 +1063,71 @@ const onPlayClick = () => {
 }
 window.onPlayClick = onPlayClick;
 
+const onAreaGroupCloseClick = () => {
+  onClosePopupClick();
+  onPlayClick();
+}
+window.onAreaGroupCloseClick = onAreaGroupCloseClick;
+
+const getAreaGroupAreaSelector = (groupName) => {
+  switch (groupName) {
+    case 'europe':
+      return `
+        <div class="area-line">
+          <button class="area-button" onclick="onAreaButtonClick(0)">
+            <img src="./medias/images/areas/france/france-fix.webp" />
+            <span>france</span>
+          </button>
+          <button class="area-button" onclick="onAreaButtonClick()" disabled>
+          <div class="no-img"></div>
+            <span>???</span>
+          </button>
+        </div>
+
+        <div class="area-line">
+          <button class="area-button" onclick="onAreaButtonClick()" disabled>
+          <div class="no-img"></div>
+            <span>???</span>
+          </button>
+          <button class="area-button" onclick="onAreaButtonClick()" disabled>
+          <div class="no-img"></div>
+            <span>???</span>
+          </button>
+        </div>
+
+        <div class="area-line">
+          <button class="area-button" onclick="onAreaButtonClick()" disabled>
+          <div class="no-img"></div>
+            <span>???</span>
+          </button>
+      </div>`;
+  
+    default:
+      return ``;
+  }
+}
+
+const onAreaGroupClick = (groupName) => {
+  onClosePopupClick();
+  document.getElementById('main').innerHTML += `
+    <div id="popup" class="popup home-screen">
+      <div class="popup-top">
+        <span>${groupName}</span>
+        <button class="close-popup-button" onclick="onAreaGroupCloseClick()">X</button>
+      </div>
+      <div class="area-selector">
+        ${getAreaGroupAreaSelector(groupName)}
+      </div>
+    </div>
+  `;
+}
+window.onAreaGroupClick = onAreaGroupClick;
+
 const onSettingsClick = () => {
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup home-screen">
       <div class="popup-top">
-        <span>Paramètres</span>
+        <span>paramètres</span>
         <button class="close-popup-button" onclick="onClosePopupClick()">X</button>
       </div>
       <div class="settings-display">
@@ -1094,14 +1149,14 @@ const onRecordsClick = () => {
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup home-screen">
       <div class="popup-top">
-        <span>Records</span>
+        <span>records</span>
         <button class="close-popup-button" onclick="onClosePopupClick()">X</button>
       </div>
       <div class="records-display">
 
-        <span>Prises totales : ${user.catches.length}</span>
+        <span>prises totales : ${user.catches.length}</span>
 
-        <span>Liste des meilleures prises</span>
+        <span>liste des meilleures prises</span>
 
         <div>
           <span>à venir</span>
@@ -1148,11 +1203,11 @@ const onHomeClick = (isFromCabin) => {
     document.getElementById('main').innerHTML += `
       <div id="popup" class="popup goto-home">
         <div class="popup-top">
-          <span>Retour à l'accueil</span>
+          <span>retour à l'accueil</span>
           <button class="close-popup-button" onclick="onClosePopupClick('home')">X</button>
         </div>
         <div>
-          <span>Voulez-vous vraiment retourner à l'accueil ?</span>
+          <span>voulez-vous vraiment retourner à l'accueil ?</span>
           <div>
             <button onclick="onClosePopupClick('home')">non</button>
             <button onclick="leaveArea()">oui</button>
@@ -1183,7 +1238,7 @@ const onVivierClick = () => {
   document.getElementById('main').innerHTML += `
     <div id="popup" class="popup vivier">
       <div class="popup-top">
-        <span>Vivier</span>
+        <span>vivier</span>
         <button class="close-popup-button" onclick="onClosePopupClick('vivier')">X</button>
       </div>
       ${renderAreaVivier()}
@@ -1284,7 +1339,7 @@ const onCellClick = (cellId) => {
       applyCharacterImgFromSelectedCell(cellId);
 
       document.getElementById('buttonsArea').innerHTML = '';
-      document.getElementById('buttonsArea').innerHTML = `<button class="abort-button" onclick="abortFishing('${cellId}')">ANNULER</button>`;
+      document.getElementById('buttonsArea').innerHTML = `<button class="abort-button" onclick="abortFishing('${cellId}')">annuler</button>`;
     }
   } else {
     if (CELL.classList.contains('selected')) {

@@ -1,6 +1,6 @@
 export const APP_NAME = 'Pêche (dev)';
-export const APP_VERSION = '0.0.23'; // v 0.0.23 - Ajout textes si record ou nouveau sur historique session
-export const APP_SHORT_NAME = `pechedev0020`;
+export const APP_VERSION = '0.0.24'; // v 0.0.24 - Ajout area group
+export const APP_SHORT_NAME = `pechedev0024`;
 
 /*
   RAF ----------------------------------------------------------
@@ -11,8 +11,6 @@ export const APP_SHORT_NAME = `pechedev0020`;
     Sandre
     Carpe
     Brochet
-
-  - Ajouter le concept de "groupe de zones"
 
   - Ajout personalisation
   - Ajout déverrouillage

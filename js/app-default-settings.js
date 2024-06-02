@@ -1,11 +1,11 @@
 export const DEFAULT_SETTINGS = [
     {
         id: 'screen',
-        name: 'Écran',
+        name: 'écran',
         settings: [
             {
                 id: 'keepScreenAwake',
-                name: 'Garder l\'écran allumé',
+                name: 'garder l\'écran allumé',
                 isActive: true
             }
         ]

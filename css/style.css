@@ -438,7 +438,6 @@ main {
       font-weight: 600;
       letter-spacing: 1px;
       box-shadow: var(--box-shadow);
-      text-transform: uppercase;
 
       &:active {
         background-color: var(--grey-60);
@@ -529,7 +528,43 @@ main {
         width: 100%;
         min-height: calc(100% - (2 * var(--cell-size))); height: calc(100% - (2 * var(--cell-size))); max-height: calc(100% - (2 * var(--cell-size)));
         overflow-y: scroll;
-        gap: calc(2 * var(--cell-size));
+        gap: var(--cell-size);
+
+        .area-group-container {
+          background-color: transparent;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          height: calc(var(--cell-size) * 2);
+          padding: 0 var(--cell-size);
+          border: 2px solid var(--grey-80);
+          border-radius: 4px;
+
+          .title {
+            /* background-color: magenta; */
+          }
+
+          &:disabled {
+            opacity: .5;
+            border: 2px solid var(--grey-40);
+          }
+
+        }
+
+        .area-group-separator {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          gap: var(--cell-size);
+          
+          .separator-part {
+            min-height: 2px;
+            flex-grow: 1;
+            background-color: var(--grey-80);
+            opacity: .5;
+          }
+        }
 
         .area-line {
           display: flex;
@@ -540,20 +575,22 @@ main {
           gap: var(--cell-size);
 
           .area-button {
+            aspect-ratio: 539/666;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            width: 50%;
-            min-height: 170px; height: 170px; max-height: 170px;
-            padding: 12px;
-            gap: 6px;
+            width: calc(50% - calc(var(--cell-size) / 2));
+            /* min-height: 170px; height: 170px; max-height: 170px; */
+            padding: 3.66%;
+            /* gap: 6px; */
             border: none;
             box-shadow: var(--box-shadow);
 
             > img {
               aspect-ratio: 1/1;
               width: 100%;
+              /* filter: grayscale(1); */
             }
 
             &:disabled {
@@ -587,7 +624,7 @@ main {
         min-height: calc(100% - (2 * var(--cell-size))); height: calc(100% - (2 * var(--cell-size))); max-height: calc(100% - (2 * var(--cell-size)));
         overflow-y: scroll;
         gap: var(--cell-size);
-        padding-top: var(--cell-size);
+        /* padding-top: var(--cell-size); */
       }
 
       .settings-group {
@@ -595,7 +632,7 @@ main {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: flex-start;
+        align-items: center;
         width: 100%;
         height: fit-content;
         font-size: 18px;

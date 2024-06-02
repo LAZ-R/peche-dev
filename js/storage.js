@@ -22,6 +22,7 @@ export const setStorage = () => {
       currentCharacter: 3,
       currentRod: 1,
       catches: [],
+      finishedAreas: [],
       settings: DEFAULT_SETTINGS,
     };
     STORAGE.setItem(`${appShortName}User`, JSON.stringify(userTMP));
