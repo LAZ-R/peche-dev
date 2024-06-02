@@ -1,1 +1,4 @@
-export const CHARACTERS = ['sa', 'ch', 'pe', 'fm'];
+export const CHARACTERS = [
+  'fm',
+  'fw',
+  ];

@@ -1,6 +1,6 @@
 export const APP_NAME = 'Pêche (dev)';
-export const APP_VERSION = '0.0.24'; // v 0.0.24 - Ajout area group
-export const APP_SHORT_NAME = `pechedev0024`;
+export const APP_VERSION = '0.0.25'; // v 0.0.25 - Ajout choix perso
+export const APP_SHORT_NAME = `pechedev0025`;
 
 /*
   RAF ----------------------------------------------------------

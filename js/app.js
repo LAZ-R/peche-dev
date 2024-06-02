@@ -122,13 +122,37 @@ const defineCabin = () => {
 
   document.getElementById('screenArea').innerHTML = '';
   document.getElementById('screenArea').classList.remove('home-screen');
-  document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/cabin/cabin.png')`;
+  document.getElementById('screenArea').style.backgroundImage = `url('./medias/images/areas/cabin/cabin-100.gif')`;
 
   document.getElementById('topArea').innerHTML = `
     <button id="homeButton" onclick="onHomeClick(true)">accueil</button>
     <span>la cabane</span>
     <span class="vivier-button"></span>
   `;
+
+  let user = getUser();
+  
+  user.currentCharacter
+
+  
+  document.getElementById('screenArea').innerHTML = `
+  <div id="cabinPopup" class="cabin-popup">
+  <span>personnage</span>
+    <div class="character-selector">
+      <div class="character-line">
+        <button id="char0" onclick="onCharacterClick(0)" class="character-button ${user.currentCharacter == 0 ? 'selected' : ''}"><img src="./medias/images/characters/fm-front.png" /></button>
+        <button id="char1" onclick="onCharacterClick(1)" class="character-button ${user.currentCharacter == 1 ? 'selected' : ''}"><img src="./medias/images/characters/fw-front.png" /></button>
+      </div>
+      <!-- <div class="character-line">
+        <button id="char2" onclick="onCharacterClick(2)" class="character-button ${user.currentCharacter == 2 ? 'selected' : ''}" disabled><img src="./medias/images/characters/ch-front.png" /></button>
+        <button id="char3" onclick="onCharacterClick(3)" class="character-button ${user.currentCharacter == 3 ? 'selected' : ''}" disabled><img src="./medias/images/characters/sa-front.png" /></button>
+      </div> -->
+    </div>
+  </div>`;
+
+  setTimeout(() => {
+    document.getElementById('cabinPopup').style.opacity = 1;
+  }, 1000);
 }
 
 const defineArea = (area) => {
@@ -415,16 +439,16 @@ const renderCurrentArea = () => {
 
 const getCurrentPlayerSprites = () => {
   return {
-    front: `./medias/images/characters/${currentCharacterId}-front.webp`,
-    frontRightFoot: `./medias/images/characters/${currentCharacterId}-front-rf.webp`,
-    frontLeftFoot: `./medias/images/characters/${currentCharacterId}-front-lf.webp`,
-    back: `./medias/images/characters/${currentCharacterId}-back.webp`,
-    backRightFoot: `./medias/images/characters/${currentCharacterId}-back-rf.webp`,
-    backLeftFoot: `./medias/images/characters/${currentCharacterId}-back-lf.webp`,
-    left: `./medias/images/characters/${currentCharacterId}-left.webp`,
-    leftMoving: `./medias/images/characters/${currentCharacterId}-left-moving.webp`,
-    right: `./medias/images/characters/${currentCharacterId}-right.webp`,
-    rightMoving: `./medias/images/characters/${currentCharacterId}-right-moving.webp`,
+    front: `./medias/images/characters/${currentCharacterId}-front.png`,
+    frontRightFoot: `./medias/images/characters/${currentCharacterId}-front-rf.png`,
+    frontLeftFoot: `./medias/images/characters/${currentCharacterId}-front-lf.png`,
+    back: `./medias/images/characters/${currentCharacterId}-back.png`,
+    backRightFoot: `./medias/images/characters/${currentCharacterId}-back-rf.png`,
+    backLeftFoot: `./medias/images/characters/${currentCharacterId}-back-lf.png`,
+    left: `./medias/images/characters/${currentCharacterId}-left.png`,
+    leftMoving: `./medias/images/characters/${currentCharacterId}-left-moving.png`,
+    right: `./medias/images/characters/${currentCharacterId}-right.png`,
+    rightMoving: `./medias/images/characters/${currentCharacterId}-right-moving.png`,
   }
 }
 
@@ -1137,6 +1161,20 @@ const onSettingsClick = () => {
   `;
 }
 window.onSettingsClick = onSettingsClick;
+
+const onCharacterClick = (characterIndex) => {
+  let user = getUser();
+  
+  document.getElementById(`char${user.currentCharacter}`).classList.remove('selected');
+  document.getElementById(`char${characterIndex}`).classList.add('selected');
+  
+  user.currentCharacter = characterIndex;
+  setUser(user);
+
+  currentCharacterId = CHARACTERS[characterIndex];
+  currentCharacter = getCurrentPlayerSprites();
+}
+window.onCharacterClick = onCharacterClick;
 
 const onAreaButtonClick = (areaIndex) => {
   currentArea = AREAS[areaIndex];

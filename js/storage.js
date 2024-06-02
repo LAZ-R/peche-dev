@@ -19,7 +19,7 @@ export const setStorage = () => {
     */
     
     let userTMP = {
-      currentCharacter: 3,
+      currentCharacter: 0,
       currentRod: 1,
       catches: [],
       finishedAreas: [],
