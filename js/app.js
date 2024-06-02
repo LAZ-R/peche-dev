@@ -377,6 +377,7 @@ const getHistoryFishCard = (fish) => {
   return `
     <div class="history-fish-card">
       <img src="./medias/images/areas/${currentArea.id}/fishes/${fish.id}.png" />
+      ${fish.isNew ? `<span class="blinking-text">nouveau</span>` : fish.isRecord ? `<span class="blinking-text">record</span>` : ''}
       <div class="notation-area small">${getNotationImages(fish.notation)}</div>
     </div>
   `;
@@ -865,27 +866,21 @@ const getBestCatchedFishInfos = (fishId) => {
   }
 }
 
-const getIndividualFishCard = (individualFish) => {
+const getIndividualFishCard = (individualFish, isBestLength, isBestMass, hasAlreadyBeenCatched) => {
   const baseFish = getFishById(individualFish.id);
   const imgSrc = baseFish.img == '' ? `./medias/images/no-picture.png` : `./medias/images/areas/${currentArea.id}/fishes/${baseFish.img}.png`;
 
-  const previousBest = getBestCatchedFishInfos(individualFish.id);
-  const isBestLength = individualFish.length > previousBest.bestLength;
-  const isBestMass = individualFish.mass > previousBest.bestMass;
-
-  const hasAlreadyBeenCatched = hasFishAlreadyBeenCatched(individualFish.id);
-
   return `
     <div class="fish-card">
-      ${!hasAlreadyBeenCatched ? `<div class="new-fish">nouveau</div>` : ''}
+      ${!hasAlreadyBeenCatched ? `<div class="blinking-text">nouveau</div>` : ''}
       <div class="fish-card-bloc fish-name">
         <span>${baseFish.commonName}</span>
         <span>(${baseFish.scientificName})</span>
       </div>
       <img class="fish-card-img" style="" src="${imgSrc}" />
       <div class="fish-card-bloc">
-        <span><span>Taille : ${individualFish.length}cm</span>${isBestLength && hasAlreadyBeenCatched ? `<span class="best">record</span>` : ''}</span>
-        <span><span>Poids : ${individualFish.mass}g</span>${isBestMass && hasAlreadyBeenCatched ? `<span class="best">record</span>` : ''}</span>
+        <span><span>Taille : ${individualFish.length}cm</span>${isBestLength && hasAlreadyBeenCatched ? `<span class="blinking-text">record</span>` : ''}</span>
+        <span><span>Poids : ${individualFish.mass}g</span>${isBestMass && hasAlreadyBeenCatched ? `<span class="blinking-text">record</span>` : ''}</span>
         <div class="notation-area">${getNotationImages(individualFish.notation)}</div>
       </div>
     </div>
@@ -961,6 +956,12 @@ const launchBattle = (domFish) => {
       // récupération message aléatoire
       const INDIVIDUAL = getRandomIndividual(getRandomAreaFishType());
 
+      const previousBest = getBestCatchedFishInfos(INDIVIDUAL.id);
+      const isBestLength = INDIVIDUAL.length > previousBest.bestLength;
+      const isBestMass = INDIVIDUAL.mass > previousBest.bestMass;
+
+      const hasAlreadyBeenCatched = hasFishAlreadyBeenCatched(INDIVIDUAL.id);
+
       const winMessages = [
         `Félicitations !`,
         `Bravo !`,
@@ -986,7 +987,7 @@ const launchBattle = (domFish) => {
           ${winMessages[randomIntFromInterval(0, winMessages.length - 1)]}<br>
           Vous avez attrapé :
         </span>
-        ${getIndividualFishCard(INDIVIDUAL)}
+        ${getIndividualFishCard(INDIVIDUAL, isBestLength, isBestMass, hasAlreadyBeenCatched)}
       `;
 
       const STORAGE_INDIVIDUAL = {
@@ -1003,7 +1004,9 @@ const launchBattle = (domFish) => {
 
       let areaCatch = {
         id: INDIVIDUAL.id,
-        notation: INDIVIDUAL.notation
+        notation: INDIVIDUAL.notation,
+        isNew: !hasAlreadyBeenCatched,
+        isRecord: isBestLength || isBestMass
       }
       currentAreaCatches.push(areaCatch);
       console.table(currentAreaCatches);

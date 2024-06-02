@@ -382,10 +382,15 @@ main {
 
           > img {
             aspect-ratio: 16/8;
-            height: 75%;
+            height: 50%;
+          }
+
+          > .blinking-text {
+            font-size: 10px;
           }
 
           > .notation-area {
+            margin-left: 0;
             filter: invert();
           }
         }
@@ -831,19 +836,11 @@ main {
           align-items: center;
           gap: 8px;
         }
-
-        .best {
-          animation: blink .5s infinite;
-        }
       }
 
       .fish-card-img {
         height: 64px;
         aspect-ratio: 16/8;
-      }
-
-      .new-fish {
-        animation: blink .5s infinite;
       }
     }
   }
@@ -901,4 +898,8 @@ main {
   100% {
     color: #ffffff;
   }
+}
+
+.blinking-text {
+  animation: blink .5s infinite;
 }
